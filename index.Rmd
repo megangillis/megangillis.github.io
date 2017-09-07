@@ -1,6 +1,6 @@
 ---
-title: "junk"
-author: "Me"
+title: "Personal Parentheticals"
+author: "Megan Gillis"
 date: "9/7/2017"
 output: html_document
 ---
