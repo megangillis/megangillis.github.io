@@ -13,4 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This is my personal webpage. This webpage creates linkage to all things about me and the things that I have done. A great way to connect with me online is via my [Linkedin](linkedin.com/in/meganegillis)
 
-![https://media.giphy.com/media/nNxT5qXR02FOM/giphy.gif, echo = FALSE]
+```{r, echo = FALSE}
+knitr:: include_graphics(https://media.giphy.com/media/nNxT5qXR02FOM/giphy.gif)
+```
