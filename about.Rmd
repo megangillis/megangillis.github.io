@@ -1,0 +1,9 @@
+---
+title: "Thoughts & Cats"
+author: "Anon Me"
+output: html_document
+---
+
+```{r, echo = FALSE}
+knitr:: include_graphics("IMG_3513.JPG")
+``` 
