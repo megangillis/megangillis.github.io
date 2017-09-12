@@ -15,4 +15,4 @@ This is my personal webpage. This webpage creates linkage to all things about me
 
 ```{r, echo = FALSE}
 knitr:: include_graphics(https://media.giphy.com/media/nNxT5qXR02FOM/giphy.gif)
-```
+```  
