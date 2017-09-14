@@ -5,5 +5,11 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "about"
+    - text: "Academia"
+      href: academia.html
+    - text: "Miscellaneous"
       href: about.html
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate

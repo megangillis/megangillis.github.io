@@ -10,5 +10,5 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Who Am I?
 
-This is my personal webpage. This webpage creates linkage to all things about me and the things that I have done. A great way to connect with me online is via my [Linkedin](linkedin.com/in/meganegillis)
+This is my personal webpage. This webpage creates linkage to all things about me and the things that I have done. A great way to connect with me online is via my [Linkedin](https://www.linkedin.com/in/meganegillis/)
 
