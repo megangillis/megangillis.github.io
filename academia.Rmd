@@ -2,3 +2,6 @@
 title: "Academics & Relevant Information"
 output: html_document
 ---
+# Go 'Neers
+```{r, echo = FALSE}
+knitr:: include_graphics("campus.jpg")
