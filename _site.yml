@@ -9,6 +9,8 @@ navbar:
       href: academia.html
     - text: "Miscellaneous"
       href: about.html
+    - text: "Projects"
+      href: projects.html
 output:
   html_document:
     theme: cosmo

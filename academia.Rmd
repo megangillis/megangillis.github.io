@@ -9,7 +9,7 @@ Welcome to *Appalachian State University*, home of football, mountain ranges, an
 
 I am graduating in December of 2017 and ready to kickstart my career.
 
-I've been studying Psychology with a concentration in business. I also have minors in Statistics, Labor Relations, and Human Resource Managment.
+I've been studying Psychology with a concentration in business. I also have minors in Statistics, Labor Relations, and Human Resource Management.
 ```
 
 ```{r}
