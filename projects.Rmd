@@ -8,7 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
-We find the orignal information [here](https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/).
+We can find the original information [here](https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/).
 
 
 
@@ -41,7 +41,8 @@ trip <- read.csv(file = "trip.csv", header = TRUE,
 weather <- read.csv(file = "weather.csv", header = TRUE, 
                     stringsAsFactors = FALSE)
 ```
-##**Introduction** This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area (mostly excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends.
+##**Introduction** 
+This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area (mostly excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends. *Interestingly enough* this transportation company has since dissolved and the data points that were collected from this company are ...
 
 ## **Station Locations**
 Lets take a look at where the rental stations are located in Seattle!
@@ -88,7 +89,7 @@ Look at all those stations! Its hard to believe they managed to go out of busine
 ```{r, label = "nbs", fig.cap = "Current Dock Count", echo = FALSE}
 #histogram showing current dock count
 ggplot(data = station, aes (x = current_dockcount)) +
-  geom_bar(fill = "pink", color = "black") +
+  geom_bar(fill = "yellow", color = "black") +
   theme_classic() +
   labs( x = "Number of bikes per station", y= "count", title = "Current Dock Count")
 ```
