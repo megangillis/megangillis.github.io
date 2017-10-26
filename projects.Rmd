@@ -2,15 +2,17 @@
 title: "Seattle's Bicycle Sharing Graphical Analysis"
 output: html_document
 ---
-```{r, eval = FALSE}
-"The website where the orignial project was completed:"
-https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
 
+We find the orignal information [here](https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/).
 
-```{r, echo = FALSE, message=FALSE}
+
+
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
 #loading data
 
 setwd("/home/students/lawshx/lawshannah.github.io/CycleShareProj")
@@ -39,9 +41,7 @@ trip <- read.csv(file = "trip.csv", header = TRUE,
 weather <- read.csv(file = "weather.csv", header = TRUE, 
                     stringsAsFactors = FALSE)
 ```
-## **Introduction**
-This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area (excluding summer logistics), the station locations, as well as trips taken by cycle riders. 
-Future explorations of this type of data could include investigating more extensively general public transportation data trends for the Seattle area. This would serve to better understand overall, and perhaps more "modern" commuter travel trends.
+##**Introduction** This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area (mostly excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends.
 
 ## **Station Locations**
 Lets take a look at where the rental stations are located in Seattle!
@@ -71,7 +71,7 @@ ggmap(mymap) + geom_point(aes(x = long, y = lat), data = station_locs,
 ```
 
 
-```{r, label = "closeUp", fig.cap="Stations map Zoomed In"}
+```{r, label = "closeUp", fig.cap="Stations map Zoomed In", warning=FALSE, message=FALSE}
 closeUp <- get_map(location = "Seattle", maptype = "roadmap", zoom = 13)
 
 # Plot a single point for each Station ID
@@ -92,14 +92,13 @@ ggplot(data = station, aes (x = current_dockcount)) +
   theme_classic() +
   labs( x = "Number of bikes per station", y= "count", title = "Current Dock Count")
 ```
-# hist(station$current_dockcount, breaks = 10, main = "Current Dock Count", xlab = "Number of Bikes Per Station")
-# ggplot(station, aes(x = current_dockcount)) + geom_histogram()
 
 
 
 
 
-```{r, label = "bikesPerStation", fig.cap="Change in Number of Bike Docks Per Station"}
+
+```{r, label = "bikesPerStation", fig.cap="Change in Number of Bike Docks Per Station", warning = FALSE, message=FALSE}
 dock_change <- station %>% group_by(station_id) %>% select(station_id, 
                                                            long, lat, ends_with("dockcount")) %>% mutate(dock_change = current_dockcount - 
                                                                                                            install_dockcount)
@@ -178,8 +177,6 @@ start_date_ym <- trip_2 %>%
 # ggplot(start_date_ym, aes(x = start_date, y = N))
 names(start_date_ym)
 
-# geom_errorbar() needed for this plot
-
 
 start_date_ym %>%
   group_by(ym, Season) %>%
@@ -215,7 +212,7 @@ Trip_Duration_Month %>%
 ```
 
 ##Sam Look here!
-```{r, label = "dayOfWeekSeasons", fig.cap="Number of Trips by Day of Week"}
+```{r, eval = FALSE, label = "dayOfWeekSeasons", fig.cap="Number of Trips by Day of Week"}
 #Number of Trips by Day of Week
 trip_2$wd <- wday(trip_2$start_date, label = TRUE)
 tripduration_m <- (trip_2$tripduration)/60
