@@ -7,7 +7,7 @@ output: html_document
 knitr:: include_graphics("campus.jpg")
 ```
 
-Welcome to *Appalachian State University*, home of football, mountain ranges, and free spirits. 
+Welcome to *Appalachian State University*, home of the infamous Mountaineer football (i.e. we beat Michigan University that one time in '07), mountain ranges, and free spirits. 
 
 I am graduating in December of 2017 and ready to kickstart my career.
 
