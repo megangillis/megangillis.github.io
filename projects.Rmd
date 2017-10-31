@@ -92,15 +92,16 @@ Look at all those stations! Its hard to believe they managed to go out of busine
 ggplot(data = station, aes (x = current_dockcount)) +
   geom_bar(fill = "yellow", color = "black") +
   theme_classic() +
-  labs( x = "Number of bikes per station", y= "count", title = "Current Dock Count")
+  labs( x = "Number of bikes per station", y= "Count", title = "Current Dock Count")
 ```
 
 
 
 
 
+##Change in Number of Bike Docks Per Station
 
-```{r, label = "bikesPerStation", fig.cap="Change in Number of Bike Docks Per Station", warning = FALSE, message=FALSE, echo = FALSE}
+```{r, label = "bikesPerStation", warning = FALSE, message=FALSE, echo = FALSE}
 dock_change <- station %>% group_by(station_id) %>% select(station_id, 
                                                            long, lat, ends_with("dockcount")) %>% mutate(dock_change = current_dockcount - 
                                                                                                            install_dockcount)
