@@ -8,7 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
-We can find the original information [here](https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/).
+We can find the original project information [here](https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/).
 
 
 
@@ -46,14 +46,14 @@ This is a report and analysis on Seattle's bicycle sharing trends. The data incl
 
 ## **Station Locations**
 Lets take a look at where the rental stations are located in Seattle!
-```{r, label = "stationLocs", "Station Locations"}
-#For show (the graphs, the evidence) Formating the dates
+```{r, label = "stationLocs", "Station Locations", message = FALSE, warning=FALSE}
+#For show (the graphs, the evidence) & formating the dates
 station$install_date <- mdy(station$install_date)
 
 
-# How many times were new stations installed?
+#How many times were new stations installed?
 station %>% summarise(n_distinct(install_date))
-# How many stations were installed on each date
+#How many stations were installed on each date
 station %>% group_by(install_date) %>% summarise(count = n()) %>% 
   arrange(install_date)
 
@@ -71,8 +71,9 @@ ggmap(mymap) + geom_point(aes(x = long, y = lat), data = station_locs,
                           alpha = 1, color = "darkred", size = 2)
 ```
 
+##Stations Locations Data
 
-```{r, label = "closeUp", fig.cap="Stations map Zoomed In", warning=FALSE, message=FALSE}
+```{r, label = "closeUp", fig.cap="Stations map Zoomed In", warning=FALSE, message=FALSE, echo =FALSE}
 closeUp <- get_map(location = "Seattle", maptype = "roadmap", zoom = 13)
 
 # Plot a single point for each Station ID
@@ -86,7 +87,7 @@ Look at all those stations! Its hard to believe they managed to go out of busine
 
 ## Histogram of Number of Bikes per Station
 
-```{r, label = "nbs", fig.cap = "Current Dock Count", echo = FALSE, message=FALSE}
+```{r, label = "nbs", fig.cap = "Current Dock Count", echo = FALSE, message=FALSE, warning = FALSE}
 #histogram showing current dock count
 ggplot(data = station, aes (x = current_dockcount)) +
   geom_bar(fill = "yellow", color = "black") +
@@ -165,7 +166,8 @@ trip_2 %>%
 
 ```
 
-##Plotting trips per month (by season, minus summer)
+##Plotting trips per month (by season; excluding summer)
+
 ```{r, label = "monthSeason", fig.cap="Trips Per Month (By Season)", message=FALSE, echo = FALSE}
 start_date_ym <- trip_2 %>% 
   mutate(ym = paste(year(start_date), 
@@ -190,6 +192,7 @@ start_date_ym %>%
 
 
 # Convert Trip Duration from Seconds to Minutes
+
 ```{r, label = "minutesSeason", fig.cap="Average Trip Duration", message=FALSE, echo = FALSE}
 Trip_Duration_Month <- start_date_ym %>% 
   mutate(trip_duration_min = tripduration/60) %>% 
@@ -212,6 +215,7 @@ Trip_Duration_Month %>%
 ```
 
 ##Number of Trips by Day of Week
+
 ```{r, eval = FALSE, label = "dayOfWeekSeasons", fig.cap="Number of Trips by Day of Week", message=FALSE, echo = FALSE}
 #Number of Trips by Day of Week
 trip_2$wd <- wday(trip_2$start_date, label = TRUE)
