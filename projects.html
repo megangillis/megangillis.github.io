@@ -212,7 +212,7 @@ $(document).ready(function () {
 <div id="station-locations" class="section level2">
 <h2><strong>Station Locations</strong></h2>
 <p>Lets take a look at where the rental stations are located in Seattle!</p>
-<pre class="r"><code>#For show (the graphs , THE EVI-DANCE) Formating the dates
+<pre class="r"><code>#For show (the graphs, the evidence) Formating the dates
 station$install_date &lt;- mdy(station$install_date)
 
 
@@ -326,8 +326,10 @@ trip_2 %&gt;%
 Time to visualize the number of rides per day
 </p>
 </div>
-<pre class="r"><code>#Plotting trips per month (by season, minus summer)
-start_date_ym &lt;- trip_2 %&gt;% 
+</div>
+<div id="plotting-trips-per-month-by-season-minus-summer" class="section level2">
+<h2>Plotting trips per month (by season, minus summer)</h2>
+<pre class="r"><code>start_date_ym &lt;- trip_2 %&gt;% 
   mutate(ym = paste(year(start_date), 
                     month(start_date), sep = &quot;/&quot;), Season = ifelse(ym %in% c(&quot;2014/10&quot;, &quot;2014/11&quot;), &quot;Fall&quot;,
                                                                    ifelse(ym %in% c(&quot;2014/12&quot;, &quot;2015/1&quot;, &quot;2015/2&quot;), &quot;Winter&quot;,
@@ -381,19 +383,22 @@ Trip_Duration_Month %&gt;%
 Average Trip Duration
 </p>
 </div>
-<div id="sam-look-here" class="section level2">
-<h2>Sam Look here!</h2>
+<div id="number-of-trips-by-day-of-week" class="section level2">
+<h2>Number of Trips by Day of Week</h2>
 <pre class="r"><code>#Number of Trips by Day of Week
 trip_2$wd &lt;- wday(trip_2$start_date, label = TRUE)
 tripduration_m &lt;- (trip_2$tripduration)/60
 trip22&lt;-trip_2
 trip22&lt;-cbind(trip22, tripduration_m)
+trip22 %&gt;% mutate(se = sd/sqrt(n()), Season = ifelse(ym %in% c(&quot;2014/10&quot;, &quot;2014/11&quot;), &quot;Fall&quot;,
+                                     ifelse(ym %in% c(&quot;2014/12&quot;, &quot;2015/1&quot;, &quot;2015/2&quot;), &quot;Winter&quot;,
+                                     ifelse(ym %in% c(&quot;2015/3&quot;, &quot;2015/4&quot;, &quot;2015/5&quot;), &quot;Spring&quot;, &quot;Summer&quot;))))
 
 
-ggplot(data = trip22, aes (x = wd, y = )) +
+ggplot(data = trip22, aes (x = wd, y = tripduration_m), col = Season, group = Season) +
   geom_point(fill = &quot;pink&quot;, color = &quot;black&quot;) +
   theme_classic() +
-  labs( x = &quot;Number of bikes per station&quot;, y= &quot;count&quot;, title = &quot;Current Dock Count&quot;)</code></pre>
+  labs( x = &quot;Weekday&quot;, y= &quot;count&quot;, title = &quot;Trips Per Day&quot;)</code></pre>
 </div>
 </div>
 

@@ -47,7 +47,7 @@ This is a report and analysis on Seattle's bicycle sharing trends. The data incl
 ## **Station Locations**
 Lets take a look at where the rental stations are located in Seattle!
 ```{r, label = "stationLocs", "Station Locations"}
-#For show (the graphs , THE EVI-DANCE) Formating the dates
+#For show (the graphs, the evidence) Formating the dates
 station$install_date <- mdy(station$install_date)
 
 
@@ -165,9 +165,8 @@ trip_2 %>%
 
 ```
 
-
+##Plotting trips per month (by season, minus summer)
 ```{r, label = "monthSeason", fig.cap="Trips Per Month (By Season)"}
-#Plotting trips per month (by season, minus summer)
 start_date_ym <- trip_2 %>% 
   mutate(ym = paste(year(start_date), 
                     month(start_date), sep = "/"), Season = ifelse(ym %in% c("2014/10", "2014/11"), "Fall",
@@ -212,18 +211,21 @@ Trip_Duration_Month %>%
   
 ```
 
-##Sam Look here!
+##Number of Trips by Day of Week
 ```{r, eval = FALSE, label = "dayOfWeekSeasons", fig.cap="Number of Trips by Day of Week"}
 #Number of Trips by Day of Week
 trip_2$wd <- wday(trip_2$start_date, label = TRUE)
 tripduration_m <- (trip_2$tripduration)/60
 trip22<-trip_2
 trip22<-cbind(trip22, tripduration_m)
+trip22 %>% mutate(se = sd/sqrt(n()), Season = ifelse(ym %in% c("2014/10", "2014/11"), "Fall",
+                                     ifelse(ym %in% c("2014/12", "2015/1", "2015/2"), "Winter",
+                                     ifelse(ym %in% c("2015/3", "2015/4", "2015/5"), "Spring", "Summer"))))
 
 
-ggplot(data = trip22, aes (x = wd, y = )) +
+ggplot(data = trip22, aes (x = wd, y = tripduration_m), col = Season, group = Season) +
   geom_point(fill = "pink", color = "black") +
   theme_classic() +
-  labs( x = "Number of bikes per station", y= "count", title = "Current Dock Count")
+  labs( x = "Weekday", y= "count", title = "Trips Per Day")
 
 ```
