@@ -86,7 +86,7 @@ Look at all those stations! Its hard to believe they managed to go out of busine
 
 ## Histogram of Number of Bikes per Station
 
-```{r, label = "nbs", fig.cap = "Current Dock Count", echo = FALSE}
+```{r, label = "nbs", fig.cap = "Current Dock Count", echo = FALSE, message=FALSE}
 #histogram showing current dock count
 ggplot(data = station, aes (x = current_dockcount)) +
   geom_bar(fill = "yellow", color = "black") +
@@ -99,7 +99,7 @@ ggplot(data = station, aes (x = current_dockcount)) +
 
 
 
-```{r, label = "bikesPerStation", fig.cap="Change in Number of Bike Docks Per Station", warning = FALSE, message=FALSE}
+```{r, label = "bikesPerStation", fig.cap="Change in Number of Bike Docks Per Station", warning = FALSE, message=FALSE, echo = FALSE}
 dock_change <- station %>% group_by(station_id) %>% select(station_id, 
                                                            long, lat, ends_with("dockcount")) %>% mutate(dock_change = current_dockcount - 
                                                                                                            install_dockcount)
@@ -134,7 +134,7 @@ dock_change <- station %>% group_by(station_id) %>% select(station_id,
 11 stations lost bike docks, 39 docks stayed the same, 8 stations gained docks.
 
 
-```{r, label = "visualRidesPerDay", fig.cap="Time to visualize the number of rides per day"}
+```{r, label = "visualRidesPerDay", fig.cap="Time to visualize the number of rides per day", message=FALSE, echo = FALSE}
 # Make the start and stop dates into POSIXct objects
 trip_2 <- trip %>% mutate(start_dt = mdy_hm(starttime), stop_dt = mdy_hm(stoptime))
 
@@ -166,7 +166,7 @@ trip_2 %>%
 ```
 
 ##Plotting trips per month (by season, minus summer)
-```{r, label = "monthSeason", fig.cap="Trips Per Month (By Season)"}
+```{r, label = "monthSeason", fig.cap="Trips Per Month (By Season)", message=FALSE, echo = FALSE}
 start_date_ym <- trip_2 %>% 
   mutate(ym = paste(year(start_date), 
                     month(start_date), sep = "/"), Season = ifelse(ym %in% c("2014/10", "2014/11"), "Fall",
@@ -190,7 +190,7 @@ start_date_ym %>%
 
 
 # Convert Trip Duration from Seconds to Minutes
-```{r, label = "minutesSeason", fig.cap="Average Trip Duration"}
+```{r, label = "minutesSeason", fig.cap="Average Trip Duration", message=FALSE, echo = FALSE}
 Trip_Duration_Month <- start_date_ym %>% 
   mutate(trip_duration_min = tripduration/60) %>% 
   group_by(ym) %>% 
@@ -212,7 +212,7 @@ Trip_Duration_Month %>%
 ```
 
 ##Number of Trips by Day of Week
-```{r, eval = FALSE, label = "dayOfWeekSeasons", fig.cap="Number of Trips by Day of Week"}
+```{r, eval = FALSE, label = "dayOfWeekSeasons", fig.cap="Number of Trips by Day of Week", message=FALSE, echo = FALSE}
 #Number of Trips by Day of Week
 trip_2$wd <- wday(trip_2$start_date, label = TRUE)
 tripduration_m <- (trip_2$tripduration)/60

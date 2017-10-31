@@ -269,57 +269,13 @@ Stations map Zoomed In
 Current Dock Count
 </p>
 </div>
-<pre class="r"><code>dock_change &lt;- station %&gt;% group_by(station_id) %&gt;% select(station_id, 
-                                                           long, lat, ends_with(&quot;dockcount&quot;)) %&gt;% mutate(dock_change = current_dockcount - 
-                                                                                                           install_dockcount)
-
-
-#attempt to recreate map plot thing
-
-closeUp &lt;- get_map(location = &quot;Seattle&quot;, maptype = &quot;roadmap&quot;, zoom = 13)
-
-ggmap(closeUp) + geom_point(aes(x = long, y = lat, size = factor(dock_change), 
-                                color = factor(dock_change)), 
-                            data = dock_change, alpha = 0.8) + 
-  guides(color = guide_legend(title = &quot;change&quot;), size = guide_legend(title = &quot;change&quot;)) + 
-  scale_size_manual(values = 10:1)</code></pre>
 <div class="figure">
 <img src="projects_files/figure-html/bikesPerStation-1.png" alt="Change in Number of Bike Docks Per Station" width="672" />
 <p class="caption">
 Change in Number of Bike Docks Per Station
 </p>
 </div>
-<pre class="r"><code># Change in docking station 
-dock_change &lt;- station %&gt;% group_by(station_id) %&gt;% select(station_id, 
-                                                           long, lat, ends_with(&quot;dockcount&quot;)) %&gt;% mutate(dock_change = current_dockcount -     install_dockcount)</code></pre>
 <p>11 stations lost bike docks, 39 docks stayed the same, 8 stations gained docks.</p>
-<pre class="r"><code># Make the start and stop dates into POSIXct objects
-trip_2 &lt;- trip %&gt;% mutate(start_dt = mdy_hm(starttime), stop_dt = mdy_hm(stoptime))
-
-trip_2 &lt;- trip_2 %&gt;% mutate(start_date = paste(month(start_dt), 
-                                               day(start_dt), year(start_dt), sep = &quot;/&quot;))
-trip_2$start_date &lt;- mdy(trip_2$start_date)
-
-trip_2 &lt;- trip_2 %&gt;% mutate(stop_date = paste(month(stop_dt), 
-                                              day(stop_dt), year(stop_dt), sep = &quot;/&quot;))
-trip_2$stop_date &lt;- mdy(trip_2$stop_date)
-
-
-# Recode the dates
-trip_2 %&gt;% 
-  
-  group_by(start_date) %&gt;%
-  
-  summarize(N = n()) %&gt;%
-  
-  ggplot(aes(x = start_date, y = N)) + 
-  
-  geom_line() + 
-  
-  labs(x = &quot;Date&quot;, y = &quot;Number of trips per day&quot;) + 
-  
-  theme_bw() + geom_smooth()</code></pre>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39;</code></pre>
 <div class="figure">
 <img src="projects_files/figure-html/visualRidesPerDay-1.png" alt="Time to visualize the number of rides per day" width="672" />
 <p class="caption">
@@ -329,28 +285,12 @@ Time to visualize the number of rides per day
 </div>
 <div id="plotting-trips-per-month-by-season-minus-summer" class="section level2">
 <h2>Plotting trips per month (by season, minus summer)</h2>
-<pre class="r"><code>start_date_ym &lt;- trip_2 %&gt;% 
-  mutate(ym = paste(year(start_date), 
-                    month(start_date), sep = &quot;/&quot;), Season = ifelse(ym %in% c(&quot;2014/10&quot;, &quot;2014/11&quot;), &quot;Fall&quot;,
-                                                                   ifelse(ym %in% c(&quot;2014/12&quot;, &quot;2015/1&quot;, &quot;2015/2&quot;), &quot;Winter&quot;,
-                                                                          ifelse(ym %in% c(&quot;2015/3&quot;, &quot;2015/4&quot;, &quot;2015/5&quot;), &quot;Spring&quot;, &quot;Summer&quot;))))
-
-
-# ggplot(start_date_ym, aes(x = start_date, y = N))
-names(start_date_ym)</code></pre>
 <pre><code>##  [1] &quot;trip_id&quot;           &quot;starttime&quot;         &quot;stoptime&quot;         
 ##  [4] &quot;bikeid&quot;            &quot;tripduration&quot;      &quot;from_station_name&quot;
 ##  [7] &quot;to_station_name&quot;   &quot;from_station_id&quot;   &quot;to_station_id&quot;    
 ## [10] &quot;usertype&quot;          &quot;gender&quot;            &quot;birthyear&quot;        
 ## [13] &quot;start_dt&quot;          &quot;stop_dt&quot;           &quot;start_date&quot;       
 ## [16] &quot;stop_date&quot;         &quot;ym&quot;                &quot;Season&quot;</code></pre>
-<pre class="r"><code>start_date_ym %&gt;%
-  group_by(ym, Season) %&gt;%
-  summarize(N=n()) %&gt;%
-  ggplot(aes(x = ym, y = N, color = Season, fill = Season, group = Season)) + 
-  geom_point() +
-  geom_line(group = 1) + 
-  labs( x = &quot;Date&quot;, y = &quot;Number of Trips(per month)&quot;)</code></pre>
 <div class="figure">
 <img src="projects_files/figure-html/monthSeason-1.png" alt="Trips Per Month (By Season)" width="672" />
 <p class="caption">
@@ -360,23 +300,6 @@ Trips Per Month (By Season)
 </div>
 <div id="convert-trip-duration-from-seconds-to-minutes" class="section level1">
 <h1>Convert Trip Duration from Seconds to Minutes</h1>
-<pre class="r"><code>Trip_Duration_Month &lt;- start_date_ym %&gt;% 
-  mutate(trip_duration_min = tripduration/60) %&gt;% 
-  group_by(ym) %&gt;% 
-  select(ym, trip_duration_min, Season) %&gt;% 
-  summarise(Avg = mean(trip_duration_min), 
-            sd = sd(trip_duration_min)) %&gt;% 
-  mutate(se = sd/sqrt(n()), Season = ifelse(ym %in% c(&quot;2014/10&quot;, &quot;2014/11&quot;), &quot;Fall&quot;,
-                                                                   ifelse(ym %in% c(&quot;2014/12&quot;, &quot;2015/1&quot;, &quot;2015/2&quot;), &quot;Winter&quot;,
-                                                                          ifelse(ym %in% c(&quot;2015/3&quot;, &quot;2015/4&quot;, &quot;2015/5&quot;), &quot;Spring&quot;, &quot;Summer&quot;))))
-
-Trip_Duration_Month %&gt;%
-  ggplot(aes(x = ym, y = Avg, col = Season, fill = Season, group = Season)) + 
-  geom_point()+
-  geom_line(aes(group = 1)) + 
-  labs(x = &quot;Date&quot; , y = &quot;Duration of Average Trip (minutes)&quot;) + 
-  theme_bw() + 
-  geom_errorbar(aes(ymin = Avg - se, ymax = Avg + se))</code></pre>
 <div class="figure">
 <img src="projects_files/figure-html/minutesSeason-1.png" alt="Average Trip Duration" width="672" />
 <p class="caption">
@@ -385,20 +308,6 @@ Average Trip Duration
 </div>
 <div id="number-of-trips-by-day-of-week" class="section level2">
 <h2>Number of Trips by Day of Week</h2>
-<pre class="r"><code>#Number of Trips by Day of Week
-trip_2$wd &lt;- wday(trip_2$start_date, label = TRUE)
-tripduration_m &lt;- (trip_2$tripduration)/60
-trip22&lt;-trip_2
-trip22&lt;-cbind(trip22, tripduration_m)
-trip22 %&gt;% mutate(se = sd/sqrt(n()), Season = ifelse(ym %in% c(&quot;2014/10&quot;, &quot;2014/11&quot;), &quot;Fall&quot;,
-                                     ifelse(ym %in% c(&quot;2014/12&quot;, &quot;2015/1&quot;, &quot;2015/2&quot;), &quot;Winter&quot;,
-                                     ifelse(ym %in% c(&quot;2015/3&quot;, &quot;2015/4&quot;, &quot;2015/5&quot;), &quot;Spring&quot;, &quot;Summer&quot;))))
-
-
-ggplot(data = trip22, aes (x = wd, y = tripduration_m), col = Season, group = Season) +
-  geom_point(fill = &quot;pink&quot;, color = &quot;black&quot;) +
-  theme_classic() +
-  labs( x = &quot;Weekday&quot;, y= &quot;count&quot;, title = &quot;Trips Per Day&quot;)</code></pre>
 </div>
 </div>
 
