@@ -1,3 +1,9 @@
+Peak times for multiple biusage is definitely in November. Came you blame bikers though?? Seattle in the fall has to be beautiful (picture for reference)
+
+```{r, echo=FALSE}
+knitr:: include_graphics("8198cdd6-617a-4b75-8b49-3a8f7453df37-141020_fall_october_lg2.jpg")
+```
+
 ---
 title: "Seattle's Cycle Sharing Analysis"
 author: "Hannah Xiao Si Laws, Sammy Pshyk, Megan Gillis"

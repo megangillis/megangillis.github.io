@@ -11,7 +11,7 @@
 
 
 
-<title>Seattle’s Bicycle Sharing Via Graphical Analyses</title>
+<title>Graphical Analyses of Seattle’s Bicycle Sharing System</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -224,31 +224,22 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Seattle’s Bicycle Sharing Via Graphical Analyses</h1>
+<h1 class="title toc-ignore">Graphical Analyses of Seattle’s Bicycle Sharing System</h1>
 
 </div>
 
 
-<p>We find the orignal information <a href="https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/">here</a>.</p>
+<p>We find the orignal information for this project <a href="https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/">here</a>.</p>
 <div id="introduction" class="section level2">
 <h2><strong>Introduction</strong></h2>
-<p>This is a report and analysis on Seattle’s bicycle sharing trends. The data includes weather reports for the area (excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends. <em>Interestingly enough</em> this transportation company has since dissolved and the data points that were collected from this company are old - and therefore potentially not reflective of general trends in bicycle sharing in Seattle currently.</p>
+<p>This is a report and analysis on Seattle’s bicycle sharing trends. The data includes weather reports for the area (excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends. <em>Interestingly enough</em>, this transportation company has since dissolved and the data points that were collected from this company are therefore older. Thus, these trends are potentially not reflective of bicycle sharing as it stands in Seattle to date.</p>
 <p><img src="9e78226e-10d7-11e7-88bd-5aa373880c40-1560x1112.jpg" width="780" /></p>
 </div>
 <div id="station-locations" class="section level2">
 <h2><strong>Station Locations</strong></h2>
-<p>Look at where the rental stations are located all over Seattle!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#For show (the graphs; evidence) Formating the dates</span>
-station<span class="op">$</span>install_date &lt;-<span class="st"> </span><span class="kw">mdy</span>(station<span class="op">$</span>install_date)
-
-
-<span class="co"># How many times were new stations installed?</span>
-station <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="kw">n_distinct</span>(install_date))</code></pre></div>
+<p>Look how widespread the rental stations are all over Seattle!</p>
 <pre><code>##   n_distinct(install_date)
 ## 1                        9</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># How many stations were installed on each date</span>
-station <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(install_date) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">count =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">arrange</span>(install_date)</code></pre></div>
 <pre><code>## # A tibble: 9 x 2
 ##   install_date count
 ##         &lt;date&gt; &lt;int&gt;
@@ -261,27 +252,18 @@ station <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">
 ## 7   2016-03-18     1
 ## 8   2016-07-03     1
 ## 9   2016-08-09     1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">station <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="kw">n_distinct</span>(station_id))</code></pre></div>
 <pre><code>##   n_distinct(station_id)
 ## 1                     58</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">station_locs &lt;-<span class="st"> </span>station <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(station_id) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="op">-</span><span class="dv">2</span>)
-
-mymap &lt;-<span class="st"> </span><span class="kw">get_map</span>(<span class="dt">location =</span> <span class="kw">c</span>(<span class="dt">lat =</span> <span class="fl">47.60</span>, <span class="dt">lon =</span> <span class="op">-</span><span class="fl">122.35</span>), <span class="dt">maptype =</span> <span class="st">&quot;roadmap&quot;</span>, <span class="dt">zoom =</span> <span class="dv">12</span>)</code></pre></div>
-<pre><code>## note : locations should be specified in the lon/lat format, not lat/lon.</code></pre>
-<pre><code>## Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=47.6,-122.35&amp;zoom=12&amp;size=640x640&amp;scale=2&amp;maptype=roadmap&amp;language=en-EN&amp;sensor=false</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Plot a single point for each Station ID</span>
-<span class="kw">ggmap</span>(mymap) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> long, <span class="dt">y =</span> lat), <span class="dt">data =</span> station_locs, 
-                          <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">color =</span> <span class="st">&quot;darkred&quot;</span>, <span class="dt">size =</span> <span class="dv">2</span>)</code></pre></div>
 <p><img src="projects_files/figure-html/stationLocs-1.png" width="672" /></p>
 </div>
-<div id="stations-locations-data-zoomed-in" class="section level2">
-<h2>Stations Locations Data (zoomed in)</h2>
-<p><img src="projects_files/figure-html/closeUp-1.png" width="672" /></p>
-<p>Look at all those stations! Its hard to believe they managed to go out of business!</p>
+<div id="locations-zoomed" class="section level2">
+<h2>Locations (zoomed)</h2>
+<p>For optimal viewing, here are the station whereabouts with some zoom for location precision. <img src="projects_files/figure-html/closeUp-1.png" width="672" /></p>
+<p>Look at all those stations! Its hard to believe this company managed to go out of business!</p>
 </div>
-<div id="number-of-bikes-per-station" class="section level2">
-<h2>Number of Bikes per Station</h2>
-<p><img src="projects_files/figure-html/nbs-1.png" width="672" /></p>
+<div id="current-dock-count" class="section level2">
+<h2>Current Dock Count</h2>
+<p><img src="projects_files/figure-html/nbs-1.png" width="672" /> Quite a few bikes to choose from!</p>
 </div>
 <div id="change-in-number-of-bike-docks-per-station" class="section level2">
 <h2>Change in Number of Bike Docks Per Station</h2>
@@ -290,7 +272,8 @@ mymap &lt;-<span class="st"> </span><span class="kw">get_map</span>(<span class=
 </div>
 <div id="number-of-rides-per-day" class="section level2">
 <h2>Number of Rides Per Day</h2>
-<p><img src="projects_files/figure-html/visualRidesPerDay-1.png" width="672" /></p>
+<p><img src="projects_files/figure-html/visualRidesPerDay-1.png" width="672" /> People really like going on fall and spring rides multiple times a day. Can you blame them though, Seattle in the fall is remarkable!!</p>
+<p><img src="8198cdd6-617a-4b75-8b49-3a8f7453df37-141020_fall_october_lg2.jpg" /><!-- --></p>
 </div>
 <div id="plotting-trips-per-month-by-season-excluding-summer" class="section level2">
 <h2>Plotting trips per month (by season; excluding summer)</h2>
