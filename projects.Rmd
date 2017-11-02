@@ -48,7 +48,7 @@ This is a report and analysis on Seattle's bicycle sharing trends. The data incl
 Lets take a look at where the rental stations are located in Seattle!
 
 ```{r, label = "stationLocs"}
-#For show (the graphs , THE EVI-DANCE) Formating the dates
+#For show (the graphs; evidence) Formating the dates
 station$install_date <- mdy(station$install_date)
 
 
@@ -78,7 +78,7 @@ closeUp <- get_map(location = "Seattle", maptype = "roadmap", zoom = 13)
 
 # Plot a single point for each Station ID
 ggmap(closeUp) + geom_point(aes(x = long, y = lat), data = station_locs, 
-                            alpha = 1, color = "violet", size = 3)
+                            alpha = 1, color = "darkred", size = 3)
 ```
 
 
@@ -227,4 +227,7 @@ start_date_ym %>%
   theme_bw() + 
   labs(x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
 
+```
+```{r}
+start_date_ym
 ```

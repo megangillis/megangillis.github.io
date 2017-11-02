@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, echo=FALSE}
 knitr:: include_graphics("IMG_E2045.JPG")
 ```
+
 Hi my name is Megan Gillis. I love good content, coffee, and continually learning. This webage was incepted to create linkage to all things about me and the things that I have done. 
 The best way to connect with me online is via my [Linkedin](https://www.linkedin.com/in/meganegillis/) 
 
