@@ -1,7 +1,7 @@
 name: "my-website"
 output_dir: "."
 navbar:
-  title: "My Page"
+  title: "Mega-la-page"
   left:
     - text: "Home"
       href: index.html
@@ -13,5 +13,6 @@ navbar:
       href: projects.html
 output:
   html_document:
-    theme: cosmo
-    highlight: textmate
+    theme: united
+    highlight: tango
+    

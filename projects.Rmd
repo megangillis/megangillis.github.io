@@ -2,20 +2,20 @@
 title: "Seattle's Bicycle Sharing Graphical Analysis"
 output: html_document
 ---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
 
-We can find the original project information [here](https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/).
+We find the orignal information [here](https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/).
 
 
 
 ```{r, echo = FALSE, warning = FALSE, message=FALSE}
 #loading data
 
-setwd("/home/students/lawshx/lawshannah.github.io/CycleShareProj")
 # For data manipulation and tidying
 library(dplyr)
 library(lubridate)
@@ -42,18 +42,19 @@ weather <- read.csv(file = "weather.csv", header = TRUE,
                     stringsAsFactors = FALSE)
 ```
 ##**Introduction** 
-This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area (mostly excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends. *Interestingly enough* this transportation company has since dissolved and the data points that were collected from this company are ...
+This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area (excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends. *Interestingly enough* this transportation company has since dissolved and the data points that were collected from this company are ...
 
 ## **Station Locations**
 Lets take a look at where the rental stations are located in Seattle!
-```{r, label = "stationLocs", "Station Locations", message = FALSE, warning=FALSE}
-#For show (the graphs, the evidence) & formating the dates
+
+```{r, label = "stationLocs"}
+#For show (the graphs , THE EVI-DANCE) Formating the dates
 station$install_date <- mdy(station$install_date)
 
 
-#How many times were new stations installed?
+# How many times were new stations installed?
 station %>% summarise(n_distinct(install_date))
-#How many stations were installed on each date
+# How many stations were installed on each date
 station %>% group_by(install_date) %>% summarise(count = n()) %>% 
   arrange(install_date)
 
@@ -61,8 +62,7 @@ station %>% group_by(install_date) %>% summarise(count = n()) %>%
 
 station %>% summarise(n_distinct(station_id))
 
-station_locs <- station %>% group_by(station_id) %>% select(1:4, 
-                                                            -2)
+station_locs <- station %>% group_by(station_id) %>% select(1:4, -2)
 
 mymap <- get_map(location = c(lat = 47.60, lon = -122.35), maptype = "roadmap", zoom = 12)
 
@@ -73,12 +73,12 @@ ggmap(mymap) + geom_point(aes(x = long, y = lat), data = station_locs,
 
 ##Stations Locations Data
 
-```{r, label = "closeUp", fig.cap="Stations map Zoomed In", warning=FALSE, message=FALSE, echo =FALSE}
+```{r, label = "closeUp", fig.cap= "Stations map Zoomed In", warning=FALSE, message=FALSE, echo = FALSE}
 closeUp <- get_map(location = "Seattle", maptype = "roadmap", zoom = 13)
 
 # Plot a single point for each Station ID
 ggmap(closeUp) + geom_point(aes(x = long, y = lat), data = station_locs, 
-                          alpha = 1, color = "darkred", size = 3)
+                            alpha = 1, color = "violet", size = 3)
 ```
 
 
@@ -106,8 +106,6 @@ dock_change <- station %>% group_by(station_id) %>% select(station_id,
                                                            long, lat, ends_with("dockcount")) %>% mutate(dock_change = current_dockcount - 
                                                                                                            install_dockcount)
 
-
-#attempt to recreate map plot thing
 
 closeUp <- get_map(location = "Seattle", maptype = "roadmap", zoom = 13)
 
@@ -219,18 +217,14 @@ Trip_Duration_Month %>%
 
 ```{r, eval = FALSE, label = "dayOfWeekSeasons", fig.cap="Number of Trips by Day of Week", message=FALSE, echo = FALSE}
 #Number of Trips by Day of Week
-trip_2$wd <- wday(trip_2$start_date, label = TRUE)
-tripduration_m <- (trip_2$tripduration)/60
-trip22<-trip_2
-trip22<-cbind(trip22, tripduration_m)
-trip22 %>% mutate(se = sd/sqrt(n()), Season = ifelse(ym %in% c("2014/10", "2014/11"), "Fall",
-                                     ifelse(ym %in% c("2014/12", "2015/1", "2015/2"), "Winter",
-                                     ifelse(ym %in% c("2015/3", "2015/4", "2015/5"), "Spring", "Summer"))))
-
-
-ggplot(data = trip22, aes (x = wd, y = tripduration_m), col = Season, group = Season) +
-  geom_point(fill = "pink", color = "black") +
-  theme_classic() +
-  labs( x = "Weekday", y= "count", title = "Trips Per Day")
+  
+start_date_ym %>%
+  group_by(wd, Season) %>%
+  summarize(N = n())%>%
+  ggplot(aes(x = wd, y = N, col = Season, fill = Season, group = Season)) + 
+  geom_point() + 
+  geom_line() + 
+  theme_bw() + 
+  labs(x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
 
 ```

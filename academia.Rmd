@@ -7,10 +7,18 @@ output: html_document
 knitr:: include_graphics("campus.jpg")
 ```
 
-Welcome to *Appalachian State University*, home of the infamous Mountaineer football (i.e. we beat Michigan University that one time in '07), mountain ranges, and free spirits. 
+Welcome to **Appalachian State University**, home of the infamous Mountaineer football (i.e. we beat Michigan University that one time in '07 *booyah*), mountain ranges, and free spirits. 
 
 I am graduating in December of 2017 and ready to kickstart my career.
 
 I've been studying Psychology with a concentration in Business. I also have minors in Statistics, Labor Relations, and Human Resource Management. 
 
-I intend to pursue a graduate level degree in Industrial-Organizational Pyschology.
+I intend to pursue a graduate level degree in **Industrial-Organizational Pyschology.**
+
+  If you are unfamiliar with I/O Psychology - it is essentially the interaction of the workplace and the application of psychological principles. As an I/O Psychologist, I seek to better the work environment for the employees, as well as come up with solutions in relation to the longevity and profitability of the business itself. 
+  
+  I think this is important because half of your functioning hours on any given workday are spent at the job; so shouldn't it be more enjoyable??? :-)
+```{r, echo=FALSE}
+knitr:: include_graphics("tips-for-enjoyable-workplace.jpg")
+```
+

@@ -1,6 +1,5 @@
 ---
-title: "Thoughts & Cats"
-author: "Anon Me"
+title: "The Necessary Evils"
 output: html_document
 ---
 
