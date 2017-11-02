@@ -99,6 +99,7 @@ ggplot(data = station, aes (x = current_dockcount)) +
   theme_classic() +
   labs( x = "Number of bikes per station", y= "Count", title = "Current Dock Count")
 ```
+
 Quite a few bikes to choose from!
 
 
@@ -165,6 +166,7 @@ trip_2 %>%
 
 
 ```
+
 People really like going on fall and spring rides multiple times a day. Can you blame them though, Seattle in the fall is remarkable!!
 
 ```{r, echo=FALSE}
