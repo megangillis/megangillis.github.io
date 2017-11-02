@@ -225,13 +225,13 @@ Trip_Duration_Month %>%
 
 ##Number of Trips by Day of Week
 
-```{r, eval = FALSE, label = "dayOfWeekSeasons", message=FALSE, echo = FALSE}
-start_date_ym %>%
-df <- as.Date(start_date_ym$start_date) %>%
-wd1 <- wday(df, label=TRUE) %>%
+```{r, eval = FALSE, label = "dayOfWeekSeasons", message=FALSE, echo = FALSE, warning = FALSE}
+#start_date_ym %>%
+#df <- as.Date(start_date_ym$start_date) %>%
+#wd1 <- wday(df, label=TRUE) %>%
 
-wd <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", 
-    "Friday", "Saturday")[as.POSIXlt(start_date_ym$start_date)$wday + 1] %>%
+#wd <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", 
+    "Friday", "Saturday")#[as.POSIXlt(start_date_ym$start_date)$wday + 1] %>%
 
 
 start_date_ym %>%
@@ -252,8 +252,4 @@ start_date_ym %>%
   #theme_bw() + 
   #labs(x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
 
-```
-
-```{r}
-as.POSIXlt(start_date_ym$start_date)$wday
 ```
