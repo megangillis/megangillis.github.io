@@ -153,6 +153,7 @@ trip_2$start_date <- mdy(trip_2$start_date)
 trip_2 <- trip_2 %>% mutate(stop_date = paste(month(stop_dt), 
                                               day(stop_dt), year(stop_dt), sep = "/"))
 trip_2$stop_date <- mdy(trip_2$stop_date)
+trip_2$wd <- wday(trip_2$start_date, label = TRUE)
 
 
 # Recode the dates
@@ -216,24 +217,6 @@ Trip_Duration_Month %>%
 
 #Number of Trips by Day of Week
 ```{r, eval = FALSE, label = "dayOfWeekSeasons", fig.cap="Number of Trips by Day of Week"}
-# trip_2$wd <- wday(trip_2$start_date, label = TRUE)
-# tripduration_m <- (trip_2$tripduration)/60
-# trip22<-trip_2
-# trip22<-cbind(trip22, tripduration_m)
-# 
-# 
-# trip23 <-mutate(trip22, Season = ifelse(ym %in% c("2014/10", "2014/11"), "Fall",
-#                                      ifelse(ym %in% c("2014/12", "2015/1", "2015/2"), "Winter",
-#                                      ifelse(ym %in% c("2015/3", "2015/4", "2015/5"), "Spring", "Summer"))))%>%
-#   group_by(Season)
-# 
-# ggplot(data = trip22, aes (x = wd, y = tripduration_m, col = Season, group = Season)) +
-#   geom_point() +
-#   geom_line() + 
-#   theme_classic() +
-#   labs( x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
-# 
-
 
   
 start_date_ym %>%

@@ -14,7 +14,7 @@ We find the orignal information for this project [here](https://proquestionasker
 
 
 
-```{r, echo = FALSE, warning = FALSE, message=FALSE}
+```{r, echo= FALSE, warning = FALSE, message=FALSE}
 #loading data
 
 # For data manipulation and tidying
@@ -46,7 +46,7 @@ weather <- read.csv(file = "weather.csv", header = TRUE,
 This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area (excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends. *Interestingly enough*, this transportation company has since dissolved and the data points that were collected from this company are therefore older. Thus, these trends are potentially not reflective of bicycle sharing as it stands in Seattle to date.
 
 ```{r, echo=FALSE}
-knitr:: include_graphics("9e78226e-10d7-11e7-88bd-5aa373880c40-1560x1112.jpg")
+knitr:: include_graphics("bikes.jpg")
 ```
 
 ## **Station Locations**
@@ -147,6 +147,7 @@ trip_2$start_date <- mdy(trip_2$start_date)
 trip_2 <- trip_2 %>% mutate(stop_date = paste(month(stop_dt), 
                                               day(stop_dt), year(stop_dt), sep = "/"))
 trip_2$stop_date <- mdy(trip_2$stop_date)
+trip_2$wd <- wday(trip_2$start_date, label = TRUE)
 
 
 # Recode the dates
@@ -170,7 +171,7 @@ trip_2 %>%
 People really like going on fall and spring rides multiple times a day. Can you blame them though, Seattle in the fall is remarkable!!
 
 ```{r, echo=FALSE}
-knitr:: include_graphics("8198cdd6-617a-4b75-8b49-3a8f7453df37-141020_fall_october_lg2.jpg")
+knitr:: include_graphics("fall.jpg")
 ```
 
 ##Plotting trips per month (by season; excluding summer)
@@ -242,6 +243,14 @@ start_date_ym %>%
   theme_bw() + 
   labs(x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
 
+#start_date_ym %>%
+ #group_by(wd, Season) %>%
+  #summarize(N = n())%>%
+  #ggplot(aes(x = wd, y = N, col = Season, fill = Season, group = Season)) + 
+  #geom_point() + 
+  #geom_line() + 
+  #theme_bw() + 
+  #labs(x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
 
 ```
 

@@ -231,6 +231,8 @@ $(document).ready(function () {
 </div>
 
 
+<p>Peak times for multiple biusage is definitely in November. Came you blame bikers though?? Seattle in the fall has to be beautiful (picture for reference)</p>
+<p><img src="8198cdd6-617a-4b75-8b49-3a8f7453df37-141020_fall_october_lg2.jpg" /><!-- --></p>
 <p>We find the orignal information <a href="https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/">here</a>.</p>
 <div id="introduction" class="section level2">
 <h2><strong>Introduction</strong></h2>
@@ -343,6 +345,7 @@ trip_<span class="dv">2</span><span class="op">$</span>start_date &lt;-<span cla
 trip_<span class="dv">2</span> &lt;-<span class="st"> </span>trip_<span class="dv">2</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">stop_date =</span> <span class="kw">paste</span>(<span class="kw">month</span>(stop_dt), 
                                               <span class="kw">day</span>(stop_dt), <span class="kw">year</span>(stop_dt), <span class="dt">sep =</span> <span class="st">&quot;/&quot;</span>))
 trip_<span class="dv">2</span><span class="op">$</span>stop_date &lt;-<span class="st"> </span><span class="kw">mdy</span>(trip_<span class="dv">2</span><span class="op">$</span>stop_date)
+trip_<span class="dv">2</span><span class="op">$</span>wd &lt;-<span class="st"> </span><span class="kw">wday</span>(trip_<span class="dv">2</span><span class="op">$</span>start_date, <span class="dt">label =</span> <span class="ot">TRUE</span>)
 
 
 <span class="co"># Recode the dates</span>
@@ -416,27 +419,7 @@ Average Trip Duration
 </div>
 <div id="number-of-trips-by-day-of-week" class="section level1">
 <h1>Number of Trips by Day of Week</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># trip_2$wd &lt;- wday(trip_2$start_date, label = TRUE)</span>
-<span class="co"># tripduration_m &lt;- (trip_2$tripduration)/60</span>
-<span class="co"># trip22&lt;-trip_2</span>
-<span class="co"># trip22&lt;-cbind(trip22, tripduration_m)</span>
-<span class="co"># </span>
-<span class="co"># </span>
-<span class="co"># trip23 &lt;-mutate(trip22, Season = ifelse(ym %in% c(&quot;2014/10&quot;, &quot;2014/11&quot;), &quot;Fall&quot;,</span>
-<span class="co">#                                      ifelse(ym %in% c(&quot;2014/12&quot;, &quot;2015/1&quot;, &quot;2015/2&quot;), &quot;Winter&quot;,</span>
-<span class="co">#                                      ifelse(ym %in% c(&quot;2015/3&quot;, &quot;2015/4&quot;, &quot;2015/5&quot;), &quot;Spring&quot;, &quot;Summer&quot;))))%&gt;%</span>
-<span class="co">#   group_by(Season)</span>
-<span class="co"># </span>
-<span class="co"># ggplot(data = trip22, aes (x = wd, y = tripduration_m, col = Season, group = Season)) +</span>
-<span class="co">#   geom_point() +</span>
-<span class="co">#   geom_line() + </span>
-<span class="co">#   theme_classic() +</span>
-<span class="co">#   labs( x = &quot;Day of the Week&quot;, y= &quot;Number of Trips&quot;, title = &quot;Trips Per Day&quot;)</span>
-<span class="co"># </span>
-
-
-  
-start_date_ym <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">start_date_ym <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">group_by</span>(wd, Season) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">N =</span> <span class="kw">n</span>())<span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> wd, <span class="dt">y =</span> N, <span class="dt">col =</span> Season, <span class="dt">fill =</span> Season, <span class="dt">group =</span> Season)) <span class="op">+</span><span class="st"> </span>
