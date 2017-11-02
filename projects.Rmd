@@ -1,11 +1,8 @@
 ---
-title: "Seattle's Bicycle Sharing Graphical Analysis"
+title: "Seattle's Bicycle Sharing Via Graphical Analyses"
 output: html_document
 ---
 
-```{r, echo=FALSE}
-knitr:: include_graphics("9e78226e-10d7-11e7-88bd-5aa373880c40-1560x1112.jpg")
-```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -46,7 +43,11 @@ weather <- read.csv(file = "weather.csv", header = TRUE,
                     stringsAsFactors = FALSE)
 ```
 ##**Introduction** 
-This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area (excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends. *Interestingly enough* this transportation company has since dissolved and the data points that were collected from this company are ...
+This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area (excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends. *Interestingly enough* this transportation company has since dissolved and the data points that were collected from this company are old - and therefore potentially not reflective of general trends in bicycle sharing in Seattle currently.
+
+```{r, echo=FALSE}
+knitr:: include_graphics("9e78226e-10d7-11e7-88bd-5aa373880c40-1560x1112.jpg")
+```
 
 ## **Station Locations**
 Look at where the rental stations are located all over Seattle!
@@ -216,18 +217,26 @@ Trip_Duration_Month %>%
 ##Number of Trips by Day of Week
 
 ```{r, eval = FALSE, label = "dayOfWeekSeasons", message=FALSE, echo = FALSE}
-#Number of Trips by Day of Week
-  
 start_date_ym %>%
-  group_by(start_date, Season) %>%
+df <- as.Date(start_date_ym$start_date) %>%
+wd1 <- wday(df, label=TRUE) %>%
+
+wd <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", 
+    "Friday", "Saturday")[as.POSIXlt(start_date_ym$start_date)$wday + 1] %>%
+
+
+start_date_ym %>%
+  group_by(wd1, Season) %>%
   summarize(N = n())%>%
-  ggplot(aes(x = start_date, y = N, col = Season, fill = Season, group = Season)) + 
+  ggplot(aes(x = wd1, y = N, col = Season, fill = Season, group = Season)) + 
   geom_point() + 
   geom_line() + 
   theme_bw() + 
   labs(x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
 
+
 ```
+
 ```{r}
-start_date_ym
+as.POSIXlt(start_date_ym$start_date)$wday
 ```

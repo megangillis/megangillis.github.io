@@ -4,5 +4,9 @@ output: html_document
 ---
 
 ```{r, echo = FALSE}
+knitr:: include_graphics("IMG_3711.JPG")
+``` 
+
+```{r, echo = FALSE}
 knitr:: include_graphics("IMG_3513.JPG")
 ``` 
