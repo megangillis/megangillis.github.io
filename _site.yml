@@ -7,7 +7,7 @@ navbar:
       href: index.html
     - text: "Academia"
       href: academia.html
-    - text: "Projects"
+    - text: "Project"
       href: projects.html
 output:
   html_document:
