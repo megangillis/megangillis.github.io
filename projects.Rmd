@@ -3,7 +3,6 @@ title: "Graphical Analyses of Seattle's Bicycle Sharing System"
 output: html_document
 ---
 
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -14,7 +13,7 @@ We find the orignal information for this project [here](https://proquestionasker
 
 
 
-```{r, echo= FALSE, warning = FALSE, message=FALSE}
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
 #loading data
 
 # For data manipulation and tidying
@@ -147,7 +146,6 @@ trip_2$start_date <- mdy(trip_2$start_date)
 trip_2 <- trip_2 %>% mutate(stop_date = paste(month(stop_dt), 
                                               day(stop_dt), year(stop_dt), sep = "/"))
 trip_2$stop_date <- mdy(trip_2$stop_date)
-trip_2$wd <- wday(trip_2$start_date, label = TRUE)
 
 
 # Recode the dates
@@ -225,31 +223,33 @@ Trip_Duration_Month %>%
 
 ##Number of Trips by Day of Week
 
-```{r, eval = FALSE, label = "dayOfWeekSeasons", message=FALSE, echo = FALSE, warning = FALSE}
-#start_date_ym %>%
-#df <- as.Date(start_date_ym$start_date) %>%
-#wd1 <- wday(df, label=TRUE) %>%
+#Number of Trips by Day of Week
+```{r, eval = FALSE, label = "dayOfWeekSeasons", fig.cap="Number of Trips by Day of Week"}
 
-#wd <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", 
-    "Friday", "Saturday")#[as.POSIXlt(start_date_ym$start_date)$wday + 1] %>%
-
-
+  
 start_date_ym %>%
-  group_by(wd1, Season) %>%
+  group_by(wd, Season) %>%
   summarize(N = n())%>%
-  ggplot(aes(x = wd1, y = N, col = Season, fill = Season, group = Season)) + 
+  ggplot(aes(x = wd, y = N, col = Season, fill = Season, group = Season)) + 
   geom_point() + 
   geom_line() + 
   theme_bw() + 
   labs(x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
 
-#start_date_ym %>%
- #group_by(wd, Season) %>%
-  #summarize(N = n())%>%
-  #ggplot(aes(x = wd, y = N, col = Season, fill = Season, group = Season)) + 
-  #geom_point() + 
-  #geom_line() + 
-  #theme_bw() + 
-  #labs(x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
+
+```
+
+#Number of Trips Per Time of Day
+```{r, eval=FALSE, label = "timeOfDaySeasons", message = FALSE, warnings = FALSE, echo = FALSE}
+
+start_date_ym%>%
+  group_by(Hour = hour(start_dt),wd, Season)%>%
+  summarize(N = n()) %>%
+  ggplot(aes(x = Hour, y= N, color = Season, group = Season)) +
+  geom_point() +
+  geom_line() + 
+  facet_wrap(~wd) + 
+  labs(x = "Hour of Day", y = "Number of Trips")
+
 
 ```

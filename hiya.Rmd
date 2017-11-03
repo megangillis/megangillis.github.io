@@ -238,12 +238,12 @@ start_date_ym %>%
 #Number of Trips Per Time of Day
 
 start_date_ym%>%
-  group_by(starttime,wd, Season)%>%
+  group_by(Hour = hour(start_dt),wd, Season)%>%
   summarize(N = n()) %>%
-  ggplot(aes(x = starttime, y= N, col = Season, fill = Season, group = Season)) +
+  ggplot(aes(x = Hour, y= N, color = Season, group = Season)) +
   geom_point() +
   geom_line() + 
-  facet_grid(.~wd) + 
+  facet_wrap(~wd) + 
   labs(x = "Hour of Day", y = "Number of Trips")
 
 
