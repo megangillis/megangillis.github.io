@@ -21,6 +21,7 @@
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -215,7 +216,18 @@ $(document).ready(function () {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://www.linkedin.com/in/meganegillis/">
+    <span class="ion ion-social-linkedin"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/megangillis/megangillis.github.io">
+    <span class="ion ion-social-github"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -433,13 +445,14 @@ Average Trip Duration
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Number of Trips Per Time of Day</span>
 
 start_date_ym<span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(starttime,wd, Season)<span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(<span class="dt">Hour =</span> <span class="kw">hour</span>(start_dt),wd, Season)<span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="dt">N =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> starttime, <span class="dt">y=</span> N, <span class="dt">col =</span> Season, <span class="dt">fill =</span> Season, <span class="dt">group =</span> Season)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Hour, <span class="dt">y=</span> N, <span class="dt">color =</span> Season, <span class="dt">group =</span> Season)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">facet_grid</span>(.<span class="op">~</span>wd) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>wd) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Hour of Day&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Number of Trips&quot;</span>)</code></pre></div>
+<p>Skip trip routes (skip to weather)</p>
 </div>
 
 

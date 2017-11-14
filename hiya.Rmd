@@ -396,5 +396,5 @@ trip_weather <- left_join(trip_3, weather, by = "Date")
 
 
 
-
+Skip trip routes (skip to weather)
 

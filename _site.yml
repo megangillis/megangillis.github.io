@@ -9,8 +9,12 @@ navbar:
       href: academia.html
     - text: "Project"
       href: projects.html
+  right:
+    - icon: ion-social-linkedin
+      href: https://www.linkedin.com/in/meganegillis/
+    - icon: ion-social-github 
+      href: https://github.com/megangillis/megangillis.github.io
 output:
   html_document:
     theme: united
     highlight: tango
-    

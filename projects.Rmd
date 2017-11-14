@@ -198,7 +198,7 @@ start_date_ym %>%
 
 
 
-# Converting Trip Duration from Seconds to Minutes 
+##Converting Trip Duration from Seconds to Minutes 
 
 ```{r, label = "minutesSeason", message=FALSE, echo = FALSE}
 Trip_Duration_Month <- start_date_ym %>% 
@@ -223,8 +223,8 @@ Trip_Duration_Month %>%
 
 ##Number of Trips by Day of Week
 
-#Number of Trips by Day of Week
-```{r, eval = FALSE, label = "dayOfWeekSeasons", fig.cap="Number of Trips by Day of Week"}
+
+```{r, eval = FALSE, label = "dayOfWeekSeasons", echo = FALSE, warning = FALSE, message=FALSE}
 
   
 start_date_ym %>%
@@ -242,8 +242,8 @@ start_date_ym %>%
 #Number of Trips Per Time of Day
 ```{r, eval=FALSE, label = "timeOfDaySeasons", message = FALSE, warnings = FALSE, echo = FALSE}
 
-start_date_ym%>%
-  group_by(Hour = hour(start_dt),wd, Season)%>%
+start_date_ym %>%
+  group_by(Hour = hour(start_dt), wd, Season)%>%
   summarize(N = n()) %>%
   ggplot(aes(x = Hour, y= N, color = Season, group = Season)) +
   geom_point() +
