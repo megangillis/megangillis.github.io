@@ -242,14 +242,29 @@ start_date_ym %>%
 #Number of Trips Per Time of Day
 ```{r, eval=FALSE, label = "timeOfDaySeasons", message = FALSE, warnings = FALSE, echo = FALSE}
 
-start_date_ym %>%
-  group_by(Hour = hour(start_dt), wd, Season)%>%
-  summarize(N = n()) %>%
-  ggplot(aes(x = Hour, y= N, color = Season, group = Season)) +
-  geom_point() +
-  geom_line() + 
-  facet_wrap(~wd) + 
-  labs(x = "Hour of Day", y = "Number of Trips")
+ trip_2$wd <- wday(trip_2$start_date, label = TRUE)
+ tripduration_m <- (trip_2$tripduration)/60
+ trip22<-trip_2
+ trip22<-cbind(trip22, tripduration_m)
+ ym <- format(trip22$start_date, "%Y/%m")
+ trip22<- cbind(trip22,ym)
+ 
+ trip22 <-mutate(trip22, Season = ifelse(ym %in% c("2014/10", "2014/11"), "Fall",
+                                      ifelse(ym %in% c("2014/12", "2015/1", "2015/2"), "Winter",
+                                      ifelse(ym %in% c("2015/3", "2015/4", "2015/5"), "Spring", "Summer"))))%>%
+   group_by(Season)
+ 
 
+trip22 %>%
+  group_by(wd, Season) %>%
+  summarize(N = n())%>%
+  ggplot(aes(x = wd, y = N, col = Season, fill = Season, group = Season)) + 
+  geom_point() + 
+  geom_line() + 
+  theme_bw() + 
+  labs(x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
+
+
+```
 
 ```
