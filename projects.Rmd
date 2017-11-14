@@ -224,24 +224,7 @@ Trip_Duration_Month %>%
 ##Number of Trips by Day of Week
 
 
-```{r, eval = FALSE, label = "dayOfWeekSeasons", echo = FALSE, warning = FALSE, message=FALSE}
-
-  
-start_date_ym %>%
-  group_by(wd, Season) %>%
-  summarize(N = n())%>%
-  ggplot(aes(x = wd, y = N, col = Season, fill = Season, group = Season)) + 
-  geom_point() + 
-  geom_line() + 
-  theme_bw() + 
-  labs(x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
-
-
-```
-
-#Number of Trips Per Time of Day
-```{r, eval=FALSE, label = "timeOfDaySeasons", message = FALSE, warnings = FALSE, echo = FALSE}
-
+```{r, eval = FALSE, label = "dayOfWeekSeasons", echo = FALSE, warning=FALSE, message=FALSE}
  trip_2$wd <- wday(trip_2$start_date, label = TRUE)
  tripduration_m <- (trip_2$tripduration)/60
  trip22<-trip_2
@@ -263,6 +246,13 @@ trip22 %>%
   geom_line() + 
   theme_bw() + 
   labs(x = "Day of the Week", y= "Number of Trips", title = "Trips Per Day")
+
+
+```
+
+#Number of Trips Per Time of Day
+```{r, eval=FALSE, label = "timeOfDaySeasons", message = FALSE, warnings = FALSE, echo = FALSE}
+
 
 
 ```
