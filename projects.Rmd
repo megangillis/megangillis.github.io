@@ -250,11 +250,17 @@ trip22 %>%
 
 ```
 
-#Number of Trips Per Time of Day
+##Number of Trips Per Time of Day
 ```{r, eval=FALSE, label = "timeOfDaySeasons", message = FALSE, warnings = FALSE, echo = FALSE}
 
-
-
-```
+trip22 %>%
+  group_by(Hour = hour(start_dt), Season, wd) %>%
+  summarize(N = n()) %>%
+ ggplot(aes(x = Hour, y= N, color = Season, group = Season)) +
+  geom_point() +
+  geom_line() + 
+  facet_wrap(~wd) + 
+  theme_bw() +
+  labs(x = "Hour of Day", y = "Number of Trips")
 
 ```
