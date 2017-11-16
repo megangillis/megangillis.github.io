@@ -1,22 +1,25 @@
-name: "my-website"
-output_dir: "."
+name: my-website
+output_dir: .
 navbar:
-  title: "Mega-la-page"
+  title: Mega-la-page
   left:
-    - text: "Home"
-      href: index.html
-    - text: "Academia"
-      href: academia.html
-    - text: "Project"
-      href: projects.html
+  - text: Home
+    href: index.html
+  - text: Academia
+    href: academia.html
+  - text: Project
+    href: projs.html
   right:
-    - icon: ion-social-linkedin
-      href: https://www.linkedin.com/in/meganegillis/
-    - icon: ion-social-github 
-      href: https://github.com/megangillis/megangillis.github.io
-    - icon: ion-ios-flask-outline
-      href: http://www.moralminds.com
+  - icon: ion-social-linkedin
+    href: https://www.linkedin.com/in/meganegillis/
+  - icon: ion-social-github
+    href: https://github.com/megangillis/megangillis.github.io
+  - icon: ion-ios-flask-outline
+    href: http://www.moralminds.com
 output:
   html_document:
     theme: united
     highlight: tango
+    lib_dir: site_libs
+    self_contained: no
+
