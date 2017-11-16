@@ -50,7 +50,6 @@ knitr:: include_graphics("bikes.jpg")
 
 ## **Station Locations**
 Look how widespread the rental stations are all over Seattle!
-
 ```{r, label = "stationLocs", echo = FALSE, warnings = FALSE, message=FALSE}
 #For show (the graphs; evidence) Formating the dates
 station$install_date <- mdy(station$install_date)
@@ -90,7 +89,6 @@ Look at all those stations! Its hard to believe this company managed to go out o
 
 
 ##Current Dock Count
-
 ```{r, label = "nbs", echo = FALSE, message=FALSE, warning = FALSE}
 #histogram showing current dock count
 ggplot(data = station, aes (x = current_dockcount)) +
@@ -105,7 +103,6 @@ Quite a few bikes to choose from!
 
 
 ##Change in Number of Bike Docks Per Station
-
 ```{r, label = "bikesPerStation", warning = FALSE, message=FALSE, echo = FALSE}
 dock_change <- station %>% group_by(station_id) %>% select(station_id, 
                                                            long, lat, ends_with("dockcount")) %>% mutate(dock_change = current_dockcount - 
@@ -173,7 +170,6 @@ knitr:: include_graphics("fall.jpg")
 ```
 
 ##Plotting trips per month (by season; excluding summer)
-
 ```{r, label = "monthSeason", message=FALSE, echo = FALSE}
 start_date_ym <- trip_2 %>% 
   mutate(ym = paste(year(start_date), 
@@ -199,7 +195,6 @@ start_date_ym %>%
 
 
 ##Converting Trip Duration from Seconds to Minutes 
-
 ```{r, label = "minutesSeason", message=FALSE, echo = FALSE}
 Trip_Duration_Month <- start_date_ym %>% 
   mutate(trip_duration_min = tripduration/60) %>% 
@@ -222,8 +217,6 @@ Trip_Duration_Month %>%
 ```
 
 ##Number of Trips by Day of Week
-
-
 ```{r, eval = FALSE, label = "dayOfWeekSeasons", echo = FALSE, warning=FALSE, message=FALSE}
  trip_2$wd <- wday(trip_2$start_date, label = TRUE)
  tripduration_m <- (trip_2$tripduration)/60
@@ -251,7 +244,7 @@ trip22 %>%
 ```
 
 ##Number of Trips Per Time of Day
-```{r, eval=FALSE, label = "timeOfDaySeasons", message = FALSE, warnings = FALSE, echo = FALSE}
+```{r, eval=FALSE, message = FALSE, warnings = FALSE, echo = FALSE}
 
 trip22 %>%
   group_by(Hour = hour(start_dt), Season, wd) %>%
@@ -262,5 +255,32 @@ trip22 %>%
   facet_wrap(~wd) + 
   theme_bw() +
   labs(x = "Hour of Day", y = "Number of Trips")
+
+```
+##Number of Trips by Member Type
+```{r, eval=FALSE, message = FALSE, warnings = FALSE, echo = FALSE}
+
+trip22 %>%
+  filter(usertype !="") %>%
+  group_by(Season, usertype, ym) %>%
+  summarize(N = n()) %>%
+  ggplot(aes(x = ym, y = N, color = Season, group = usertype, fill = usertype)) + 
+  geom_point(aes(shape = usertype), size = 3) + 
+  geom_line() + 
+  theme_bw() + 
+  labs(x = "Date", y= "Total Number of Trips Per Month")
+
+```
+
+
+##Member Demographics
+Riders tend to be aged towards the upper 20s
+```{r, eval=FALSE, message = FALSE, warnings = FALSE, echo = FALSE}
+
+trip_2$usertype <- as.factor(trip_2$usertype)
+trip_age <- trip_2 %>% mutate(age = year(start_dt) - birthyear)
+
+hist(trip_age$age, main = "Member Age", xlab = "Number of Riders", 
+    col = "lightpink", breaks = 25)
 
 ```
