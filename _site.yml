@@ -14,6 +14,8 @@ navbar:
       href: https://www.linkedin.com/in/meganegillis/
     - icon: ion-social-github 
       href: https://github.com/megangillis/megangillis.github.io
+    - icon: ion-ios-flask-outline
+      href: http://www.moralminds.com
 output:
   html_document:
     theme: united
