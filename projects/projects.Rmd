@@ -1,12 +1,15 @@
 ---
 title: "Graphical Analyses of Seattle's Bicycle Sharing System"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: bookdown::html_document2
 ---
 
 
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = TRUE, fig.align = "center", comment = NA, warning = FALSE, message = FALSE, prompt = TRUE)
+
 ```
 
 
@@ -16,7 +19,8 @@ We find the orignal information for this project [here](https://proquestionasker
 
 
 ```{r, echo = FALSE, warning = FALSE, message=FALSE}
-#loading data
+
+#loading the  data
 
 # For data manipulation and tidying
 library(dplyr)
@@ -43,18 +47,23 @@ trip <- read.csv(file = "trip.csv", header = TRUE,
 weather <- read.csv(file = "weather.csv", header = TRUE, 
                     stringsAsFactors = FALSE)
 ```
+
 # **Introduction** 
 This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area (excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends. *Interestingly enough*, this transportation company has since dissolved and the data points that were collected from this company are therefore older. Thus, these trends are potentially not reflective of bicycle sharing as it stands in Seattle to date.
 
+
 ```{r, echo=FALSE}
+
 knitr:: include_graphics("bikes.jpg")
+
 ```
 
-# **Station Locations**
+# Station Locations
 
 Look how widespread the rental stations are all over Seattle (see Figure \@ref(fig:BSL))!
 
 ```{r, label = "BSL", fig.cap = "Seattle Bike Station Locations", echo = FALSE, warnings = FALSE, message=FALSE}
+
 #For show (the graphs; evidence) Formating the dates
 station$install_date <- mdy(station$install_date)
 
@@ -76,6 +85,7 @@ mymap <- get_map(location = c(lat = 47.60, lon = -122.35), maptype = "roadmap", 
 # Plot a single point for each Station ID
 ggmap(mymap) + geom_point(aes(x = long, y = lat), data = station_locs, 
                           alpha = 1, color = "darkred", size = 2)
+
 ```
 
 ## Locations (zoomed)
@@ -83,11 +93,13 @@ ggmap(mymap) + geom_point(aes(x = long, y = lat), data = station_locs,
 For optimal viewing, here are the station whereabouts with some zoom for location precision.
 
 ```{r, label = "closeUp",  fig.cap = "Closeup", warning=FALSE, message=FALSE, echo = FALSE}
+
 closeUp <- get_map(location = "Seattle", maptype = "roadmap", zoom = 13)
 
 # Plot a single point for each Station ID
 ggmap(closeUp) + geom_point(aes(x = long, y = lat), data = station_locs, 
                             alpha = 1, color = "darkred", size = 3)
+
 ```
 
 
@@ -97,11 +109,13 @@ Look at all those stations! Its hard to believe this company managed to go out o
 ## Current Dock Count
 
 ```{r, label = "nbs",  fig.cap = "Bike Count", echo = FALSE, message=FALSE, warning = FALSE}
+
 #histogram showing current dock count
 ggplot(data = station, aes (x = current_dockcount)) +
-  geom_bar(fill = "lightgreen", color = "blue") +
+  geom_bar(fill = "lightcoral", color = "gold") +
   theme_classic() +
   labs( x = "Number of bikes per station", y= "Count", title = "Current Dock Count")
+
 ```
 
 Quite a few bikes to choose from!
@@ -112,6 +126,7 @@ Quite a few bikes to choose from!
 ## Change in Number of Bike Docks Per Station
 
 ```{r, label = "bikesPerStation", fig.cap= "Bikes Per Station", warning = FALSE, message=FALSE, echo = FALSE}
+
 dock_change <- station %>% group_by(station_id) %>% select(station_id, 
                                                            long, lat, ends_with("dockcount")) %>% mutate(dock_change = current_dockcount - 
                                                                                                            install_dockcount)
@@ -142,6 +157,7 @@ dock_change <- station %>% group_by(station_id) %>% select(station_id,
 # Number of Rides Per Day
 
 ```{r, label = "visualRidesPerDay", fig.cap = "Daily Riders", message=FALSE, echo = FALSE}
+
 # Make the start and stop dates into POSIXct objects
 trip_2 <- trip %>% mutate(start_dt = mdy_hm(starttime), stop_dt = mdy_hm(stoptime))
 
@@ -174,13 +190,18 @@ trip_2 %>%
 
 People really like going on fall and spring rides multiple times a day. Can you blame them though, Seattle in the fall is remarkable!!
 
+
 ```{r, echo=FALSE}
+
 knitr:: include_graphics("fall.jpg")
+
 ```
+
 
 # Plotting trips per month (by season; excluding summer)
 
 ```{r, label = "monthSeason", fig.cap = "Trips by season, per month", message=FALSE, echo = FALSE}
+
 start_date_ym <- trip_2 %>% 
   mutate(ym = paste(year(start_date), 
                     month(start_date), sep = "/"), Season = ifelse(ym %in% c("2014/10", "2014/11"), "Fall",
@@ -200,6 +221,7 @@ start_date_ym %>%
   geom_line(group = 1) + 
   theme_bw() +
   labs( x = "Date", y = "Number of Trips(per month)")
+
 ```
 
 
@@ -207,6 +229,7 @@ start_date_ym %>%
 # Converting Trip Duration from Seconds to Minutes 
 
 ```{r, label = "minutesSeason", fig.cap= "Conversions", message=FALSE, echo = FALSE}
+
 Trip_Duration_Month <- start_date_ym %>% 
   mutate(trip_duration_min = tripduration/60) %>% 
   group_by(ym) %>% 
@@ -230,6 +253,7 @@ Trip_Duration_Month %>%
 # Number of Trips by Day of Week
 
 ```{r, fig.cap = "Weekday Trips", echo = FALSE, warning=FALSE, message=FALSE}
+
  trip_2$wd <- wday(trip_2$start_date, label = TRUE)
  tripduration_m <- (trip_2$tripduration)/60
  trip22<-trip_2
@@ -292,26 +316,32 @@ trip22 %>%
 ```{r, fig.cap = "Members v. Short-Term Pass Holder", message = FALSE, warnings = FALSE, echo = FALSE}
 
 #Frequency histogram
+library(tidyverse)
+start_date_ym <- mutate(start_date_ym, freelim= ifelse(usertype=="Member", 45, 30))
 start_date_ym %>%
-  filter(usertype !="")%>%
-  ggplot(aes(x = tripduration/60, fill = usertype))+
-  geom_histogram() +
-  xlim(1,100) +
-  facet_grid(.~ usertype) + 
-  scale_fill_manual(values = c("blue violet", "chartreuse")) +
-  theme_bw() +
-  guides(fill = FALSE) +
-  geom_vline(aes(xintercept = quantile(tripduration/60, prob = 0.75)), linetype = "dashed")
-
-
+  filter(usertype !="") %>%
+  group_by(tripduration, trip_id, usertype, freelim) %>%
+  summarize(N=n()) %>%
+  ggplot(aes(x=tripduration/60, fill=usertype), group=usertype) +
+    geom_histogram(binwidth = 2, show.legend = FALSE) +
+    xlim(1,60) +
+    facet_grid(.~usertype) + 
+    scale_fill_manual(values=c("seagreen1", "navy")) +
+    theme_bw() +
+    guides(colour=FALSE) +
+    geom_vline(aes(xintercept=freelim), linetype="dashed") +
+    labs(x="Trip Duration (minutes)", y="Number of Trips") 
 
 ```
 
-#
-```{r, message= FALSE}
-tripduration_m <- start_date_ym$tripduration
 
-start_date_ym <- start_date_ym %>% mutate(cost = ifelse(usertype == "Member" & tripduration_m <= 45,0, ifelse(usertype == "Member" & tripduration_m > 45 & tripduration_m <= 75, 2,ifelse(usertype == "Member" & tripduration_m > 75, (2 + 2*ceiling((tripduration_m -75)/30)), ifelse(usertype == "Short-Term Pass Holder" & tripduration_m <= 30, 0, ifelse(usertype == "Short-Term Pass Holder" & tripduration_m > 30 & tripduration_m < 60, 2, ifelse(usertype == "Short-Term Pass Holder" & tripduration_m > 60, (2 + 5 * ceiling((tripduration_m - 60)/30)), NA)))))))
+
+##Cost of a Biking Trip 
+
+```{r, label = "CBT", fig.cap = "Trip Cost for Members v. Non-Members", echo = FALSE, message = FALSE, warnings = FALSE}
+
+start_date_ym <- mutate(start_date_ym, tripduration_m = tripduration/60)
+start_date_ym <- start_date_ym %>% mutate(cost = ifelse(usertype == "Member" & tripduration_m <= 45,0, ifelse(usertype == "Member" & tripduration_m > 45 & tripduration_m <= 75, 2, ifelse(usertype == "Member" & tripduration_m > 75, (2 + 2*ceiling((tripduration_m -75)/30)), ifelse(usertype == "Short-Term Pass Holder" & tripduration_m <= 30, 0, ifelse(usertype == "Short-Term Pass Holder" & tripduration_m > 30 & tripduration_m < 60, 2, ifelse(usertype == "Short-Term Pass Holder" & tripduration_m > 60, (2 + 5 * ceiling((tripduration_m - 60)/30)), NA)))))))
   
   
 start_date_ym %>%
@@ -319,23 +349,27 @@ start_date_ym %>%
 ggplot(aes(x = cost, fill = usertype)) +
   geom_histogram() +
   facet_grid(.~ usertype) +
-  scale_fill_manual(values = "pink", "lightblue") +
+  scale_fill_manual(values = c("steelblue1", "gold")) +
   guides(fill = F) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
   labs(x = "Additional Fee($)")
 
 ```
+It is definitely worth it to be a member vs. a nonmember, there are many associated costs if you aren't.(see Figure \@ref(fig:CBT))!
 
-# Member Demographics
 
-Riders tend to be aged towards the upper 20s
+
+
+# Bicycle Sharing Member Demographics
+
+Riders tend to be aged towards the upper 20s, but this number could be misleading because we don't have any real identifiers for the users (i.e. is one 20 year old taking 100 trips a day, or if there are a ton of 20 year olds using the service one time).
 
 ```{r, fig.cap = "Member Ages", message = FALSE, warnings = FALSE, echo = FALSE}
 
 trip_2$usertype <- as.factor(trip_2$usertype)
 trip_age <- trip_2 %>% mutate(age = year(start_dt) - birthyear)
 
-hist(trip_age$age, main = "Member Age", xlab = "Number of Riders", col = "lightpink", breaks = 25)
+hist(trip_age$age, main = "Member Age", xlab = "Number of Riders", col = "plum1", breaks = 25)
 
 ```
