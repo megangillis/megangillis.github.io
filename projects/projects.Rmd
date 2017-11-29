@@ -373,3 +373,131 @@ trip_age <- trip_2 %>% mutate(age = year(start_dt) - birthyear)
 hist(trip_age$age, main = "Member Age", xlab = "Number of Riders", col = "plum1", breaks = 25)
 
 ```
+
+
+
+#Temperature Quartiles
+
+## Minimum Temperatures
+
+```{r, label = "temps min", message = FALSE, warnings = FALSE, echo = FALSE}
+
+# Adjusting the Date Variable
+weather$Date <- mdy(weather$Date)
+
+# Adjusting the Events Variable
+weather$Events <- as.factor(weather$Events)
+
+
+levels(weather$Events)
+
+weather$Events <- gsub("Fog , Rain|Fog-Rain", "Fog-Rain", weather$Events)
+weather$Events <- gsub("Rain , Snow|Rain-Snow", "Rain-Snow", 
+    weather$Events)
+weather$Events <- gsub("Rain , Thunderstorm|Rain-Thunderstorm", 
+    "Rain-TS", weather$Events)
+
+weather$Events <- as.factor(weather$Events)
+
+weather$Max_Gust_Speed_MPH <- gsub("-", 0, weather$Max_Gust_Speed_MPH)
+
+weather$Max_Gust_Speed_MPH <- as.numeric(weather$Max_Gust_Speed_MPH)
+
+weather[which(is.na(weather$Mean_Temperature_F)), 1]
+weather[490, "Mean_Temperature_F"] <- 50
+
+weather$Events <- gsub("^$", "Other", weather$Events)
+weather$Events <- as.factor(weather$Events)
+
+
+
+weather %>% 
+  
+  group_by(Date) %>%
+  
+  ggplot(aes(x = Date, y = Min_TemperatureF)) + 
+  
+  geom_line() + 
+  
+  labs(x = "Date", y = "Minimum Temperature (F)") + 
+  
+  theme_bw() 
+
+
+```
+
+##Mean Temperatures
+
+
+```{r, label = "temp means", message = FALSE, warnings = FALSE, echo = FALSE}
+
+weather %>% 
+  
+  group_by(Date) %>%
+  
+  ggplot(aes(x = Date, y = as.numeric(Mean_Temperature_F))) + 
+  
+  geom_line() + 
+  
+  labs(x = "Date", y = "Mean Temperature (F)") + 
+  
+  theme_bw() 
+
+```
+
+
+##Maximum Temperatures
+
+
+```{r, label = "temps max", message = FALSE, warnings = FALSE, echo = FALSE}
+
+weather %>% 
+  
+  group_by(Date) %>%
+  
+  
+  ggplot(aes(x = Date, y = Max_Temperature_F)) + 
+  
+  geom_line() + 
+  
+  labs(x = "Date", y = "Maximum Temperature (F)") + 
+  
+  theme_bw() 
+
+```
+
+
+# Local Weather Events
+
+```{r, message = FALSE, warnings = FALSE, echo = FALSE}
+
+weather %>%
+  ggplot(aes(x = as.factor(Events)))+
+  geom_bar(fill = "turquoise1")+
+  labs(x = "Events", y = "Number of Events") +
+  theme_bw()
+
+```
+
+# Mean Temperature vs. Number of Trips
+
+```{r, label = "Number of Trips", message = FALSE, warnings = FALSE, echo = FALSE}
+# Make a copy of the data frame
+trip_3 <- trip22
+
+# Change column name in trip_3 to match weather dataset
+trip_3$Date <- trip_3$start_date
+
+# Left join the trip and weather dataframes by date.
+trip_weather <- left_join(trip_3, weather, by = "Date")
+
+
+
+trip_weather %>%
+  group_by(Mean_Temperature_F) %>%
+  summarize(N = n()) %>%
+  ggplot(aes(x = round((Mean_Temperature_F/5)*5), y = N)) +
+    geom_line() + 
+    theme_bw() + 
+    labs(x = "Temperature (Rounded to Nearest 5 degrees F)", y = "Number of Trips")
+```
