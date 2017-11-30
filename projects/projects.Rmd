@@ -58,6 +58,9 @@ knitr:: include_graphics("bikes.jpg")
 
 ```
 
+## Loading the Necessary Data
+
+
 # Station Locations
 
 Look how widespread the rental stations are all over Seattle (see Figure \@ref(fig:BSL))!
@@ -389,7 +392,6 @@ weather$Date <- mdy(weather$Date)
 weather$Events <- as.factor(weather$Events)
 
 
-levels(weather$Events)
 
 weather$Events <- gsub("Fog , Rain|Fog-Rain", "Fog-Rain", weather$Events)
 weather$Events <- gsub("Rain , Snow|Rain-Snow", "Rain-Snow", 
@@ -482,6 +484,7 @@ weather %>%
 # Mean Temperature vs. Number of Trips
 
 ```{r, label = "Number of Trips", message = FALSE, warnings = FALSE, echo = FALSE}
+
 # Make a copy of the data frame
 trip_3 <- trip22
 
@@ -492,12 +495,47 @@ trip_3$Date <- trip_3$start_date
 trip_weather <- left_join(trip_3, weather, by = "Date")
 
 
-
 trip_weather %>%
-  group_by(Mean_Temperature_F) %>%
+  mutate(Mean_Temperature_F5 = 5*round(Mean_Temperature_F/5))%>%
+  group_by(Mean_Temperature_F5) %>%
   summarize(N = n()) %>%
-  ggplot(aes(x = round((Mean_Temperature_F/5)*5), y = N)) +
+  ggplot(aes(x = Mean_Temperature_F5, y = N)) +
     geom_line() + 
     theme_bw() + 
     labs(x = "Temperature (Rounded to Nearest 5 degrees F)", y = "Number of Trips")
+
+```
+
+
+## Normalize the Temperature vs. Number of Trips
+```{r, label = "Number of Trips/Number of days at Temp", message = FALSE, warnings = FALSE, echo = FALSE}
+
+trip_weather %>%
+  mutate(Mean_Temperature_F5 = 5*round(Mean_Temperature_F/5))%>%
+  group_by(Mean_Temperature_F5) %>%
+  summarize(N = n(), Days = n_distinct(Date)) %>%
+  mutate(Ratio = N/Days)%>%
+  ggplot(aes(x = Mean_Temperature_F5, y = Ratio)) +
+    geom_line() + 
+    theme_bw() + 
+    labs(x = "Temperature (Rounded to Nearest 5 degrees F)", y = "Number of Trips / Number of Days at Temperature")
+
+
+```
+
+
+# Precipitation vs. Number of Trips
+
+```{r, message = FALSE, warnings = FALSE, echo = FALSE}
+
+trip_weather %>%
+  mutate(Precipitation_In.2 = .2*round(Precipitation_In/.2))%>%
+  group_by(Precipitation_In.2) %>%
+  summarize(N = n(), Days = n_distinct(Date)) %>%
+  mutate(Ratio = N/Days)%>%
+  ggplot(aes(x = Precipitation_In.2, y = Ratio)) +
+  geom_line() +
+  theme_bw() +
+  labs(x = "Precipitation (Rounded to the Nearest 0.2 Inches)", y = "Number of Trips / Number of Days at Precipitation Level")
+
 ```
