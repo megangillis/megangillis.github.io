@@ -1,5 +1,6 @@
 ---
 title: "Graphical Analyses of Seattle's Bicycle Sharing System"
+author: "[Megan Gillis](https://www.linkedin.com/in/meganegillis/)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: bookdown::html_document2
 ---
@@ -14,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.align = "center", comment = NA, warning =
 
 
 
-We find the orignal information for this project [here](https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/).
+We find the orignal information for this project on Amber's website [here](https://proquestionasker.github.io/projects/2016/11/10/bicyclesseattle/).
 
 
 
@@ -49,7 +50,8 @@ weather <- read.csv(file = "weather.csv", header = TRUE,
 ```
 
 # **Introduction** 
-This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area (excluding summer logistics), the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively overall public transportation data trends for this area. This would serve to establish a better understanding of public transportation trends. *Interestingly enough*, this transportation company has since dissolved and the data points that were collected from this company are therefore older. Thus, these trends are potentially not reflective of bicycle sharing as it stands in Seattle to date.
+This is a report and analysis on Seattle's bicycle sharing trends. The data includes weather reports for the area, the station locations, as well as trips taken by cycle riders. Future explorations of this type of data could include investigating more extensively the usage and effectiveness of other public transportation for this area. This would serve to establish a better understanding of public transportation trends for Seattle. *Interestingly enough*, this transportation company (Pronto Cycle Sharing) has since dissolved and the data points that were collected from this company are from October 2014-August2016. Thus, the trends showcased by this dataset are not necessarily reflective of current bike sharing trends in Seattle.
+
 
 
 ```{r, echo=FALSE}
@@ -59,6 +61,7 @@ knitr:: include_graphics("bikes.jpg")
 ```
 
 ## Loading the Necessary Data
+Data was downloaded and compiled from [Kaggle](https://www.kaggle.com/pronto/cycle-share-dataset) . csv files for "station," "trip," and "weather" from the company "Pronto Cycle Sharing" were pulled from this site and used for this project.
 
 
 # Station Locations
@@ -66,18 +69,6 @@ knitr:: include_graphics("bikes.jpg")
 Look how widespread the rental stations are all over Seattle (see Figure \@ref(fig:BSL))!
 
 ```{r, label = "BSL", fig.cap = "Seattle Bike Station Locations", echo = FALSE, warnings = FALSE, message=FALSE}
-
-#For show (the graphs; evidence) Formating the dates
-station$install_date <- mdy(station$install_date)
-
-
-# How many times were new stations installed?
-station %>% summarise(n_distinct(install_date))
-# How many stations were installed on each date
-station %>% group_by(install_date) %>% summarise(count = n()) %>% 
-  arrange(install_date)
-
-
 
 station %>% summarise(n_distinct(station_id))
 
@@ -111,17 +102,17 @@ Look at all those stations! Its hard to believe this company managed to go out o
 
 ## Current Dock Count
 
-```{r, label = "nbs",  fig.cap = "Bike Count", echo = FALSE, message=FALSE, warning = FALSE}
+```{r, label = "nbs",  fig.cap = "Station Bike Counts", echo = FALSE, message=FALSE, warning = FALSE}
 
 #histogram showing current dock count
 ggplot(data = station, aes (x = current_dockcount)) +
-  geom_bar(fill = "lightcoral", color = "gold") +
+  geom_bar(fill = "lightcoral", color = "black") +
   theme_classic() +
   labs( x = "Number of bikes per station", y= "Count", title = "Current Dock Count")
 
 ```
 
-Quite a few bikes to choose from!
+Quite a few bikes to choose from (as of August 2016)!
 
 
 
@@ -159,7 +150,7 @@ dock_change <- station %>% group_by(station_id) %>% select(station_id,
 
 # Number of Rides Per Day
 
-```{r, label = "visualRidesPerDay", fig.cap = "Daily Riders", message=FALSE, echo = FALSE}
+```{r, label = "visualRidesPerDay", fig.cap = "Daily Riders", message=FALSE, echo = FALSE, warning = FALSE}
 
 # Make the start and stop dates into POSIXct objects
 trip_2 <- trip %>% mutate(start_dt = mdy_hm(starttime), stop_dt = mdy_hm(stoptime))
@@ -203,7 +194,7 @@ knitr:: include_graphics("fall.jpg")
 
 # Plotting trips per month (by season; excluding summer)
 
-```{r, label = "monthSeason", fig.cap = "Trips by season, per month", message=FALSE, echo = FALSE}
+```{r, results = 'asis', label = "monthSeason", fig.cap = "Trips by season, per month", echo = FALSE, message=FALSE, warning = FALSE, cache=FALSE}
 
 start_date_ym <- trip_2 %>% 
   mutate(ym = paste(year(start_date), 
@@ -213,9 +204,6 @@ start_date_ym <- trip_2 %>%
 
 
 # ggplot(start_date_ym, aes(x = start_date, y = N))
-names(start_date_ym)
-
-
 start_date_ym %>%
   group_by(ym, Season) %>%
   summarize(N=n()) %>%
@@ -223,15 +211,16 @@ start_date_ym %>%
   geom_point() +
   geom_line(group = 1) + 
   theme_bw() +
-  labs( x = "Date", y = "Number of Trips(per month)")
+  labs(x = "Date", y = "Number of Trips(per month)")
 
 ```
+December, January, and February are coded as "Winter," March, April, and May are coded as "Spring," and September, October, and November are coded as "Fall." 
+It is pretty obvious that usage would peak in the mid-fall, decline going into the winter months, and start a gradual increase as it transitions from winter into spring. Spring is the ultimate peak of bike riding peaking about early to mid-March.
 
 
+# Average Trip Duration
 
-# Converting Trip Duration from Seconds to Minutes 
-
-```{r, label = "minutesSeason", fig.cap= "Conversions", message=FALSE, echo = FALSE}
+```{r, label = "minutesSeason", fig.cap= "Conversions", message=FALSE, echo = FALSE, warning = FALSE}
 
 Trip_Duration_Month <- start_date_ym %>% 
   mutate(trip_duration_min = tripduration/60) %>% 
@@ -252,6 +241,8 @@ Trip_Duration_Month %>%
   geom_errorbar(aes(ymin = Avg - se, ymax = Avg + se))
   
 ```
+Not a huge amount of variance between the seasons and the amount of time spent on the average ride. This could also be due to the sheer expense of riding with Pronto in general for both members and nonmembers.
+
 
 # Number of Trips by Day of Week
 
@@ -281,6 +272,9 @@ trip22 %>%
 
 
 ```
+Oddly enough, there is no day of the week that is consistently higher (even on the weekends). Obviously the summer has the highest level of riders, but otherwise, no a lot of distint trends from this plot.
+
+
 
 # Number of Trips Per Time of Day
 
@@ -297,6 +291,9 @@ trip22 %>%
   labs(x = "Hour of Day", y = "Number of Trips")
 
 ```
+People seem to most commonly use this service during the peak commuting hours (i.e. 8am and 5pm). However, on the weekends, the peak is around mid-day.
+
+
 
 # Number of Trips by Member Type
 
@@ -313,6 +310,11 @@ trip22 %>%
   labs(x = "Date", y= "Total Number of Trips Per Month")
 
 ```
+As to be expected, members have much overall higher usage rates than short-term pass holders (24 hour pass or a 3 day pass are the two options for short-term). Short-term passes are likely most appropriate for tourists or people who are vacationing in Seattle. 
+
+The two plots almost mimic one another as far as usuage rates go - this is interesting because of the differentials between members and short-term passholders.
+
+
 
 # Trip Duration by Member Type
 
@@ -364,9 +366,9 @@ It is definitely worth it to be a member vs. a nonmember, there are many associa
 
 
 
-# Bicycle Sharing Member Demographics
 
-Riders tend to be aged towards the upper 20s, but this number could be misleading because we don't have any real identifiers for the users (i.e. is one 20 year old taking 100 trips a day, or if there are a ton of 20 year olds using the service one time).
+
+# Bicycle Sharing Member Demographics
 
 ```{r, fig.cap = "Member Ages", message = FALSE, warnings = FALSE, echo = FALSE}
 
@@ -376,10 +378,10 @@ trip_age <- trip_2 %>% mutate(age = year(start_dt) - birthyear)
 hist(trip_age$age, main = "Member Age", xlab = "Number of Riders", col = "plum1", breaks = 25)
 
 ```
+Riders tend to be aged towards the upper 20s, but this number could be misleading because we don't have any real identifiers for the users (i.e. is one 20 year old taking 100 trips a day, or if there are a ton of 20 year olds using the service one time).
 
 
-
-#Temperature Quartiles
+#Temperature Variance In Seattle
 
 ## Minimum Temperatures
 
@@ -480,6 +482,7 @@ weather %>%
   theme_bw()
 
 ```
+What a rainy city!
 
 # Mean Temperature vs. Number of Trips
 
