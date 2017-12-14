@@ -182,10 +182,10 @@ trip_2 %>%
 
 ```
 
-People really like going on fall and spring rides multiple times a day. Can you blame them though, Seattle in the fall is remarkable!!
+People really like going on fall and spring rides multiple times a day. Can you blame them though, Seattle in the fall is remarkable (see Figure \@ref(fig:fall))!!!
 
 
-```{r, echo=FALSE}
+```{r, label = "fall", echo=FALSE}
 
 knitr:: include_graphics("fall.jpg")
 
@@ -291,6 +291,7 @@ trip22 %>%
   labs(x = "Hour of Day", y = "Number of Trips")
 
 ```
+
 People seem to most commonly use this service during the peak commuting hours (i.e. 8am and 5pm). However, on the weekends, the peak is around mid-day.
 
 
@@ -318,7 +319,7 @@ The two plots almost mimic one another as far as usuage rates go - this is inter
 
 # Trip Duration by Member Type
 
-```{r, fig.cap = "Members v. Short-Term Pass Holder", message = FALSE, warnings = FALSE, echo = FALSE}
+```{r, label = "tripdur", fig.cap = "Members v. Short-Term Pass Holder", message = FALSE, warnings = FALSE, echo = FALSE}
 
 #Frequency histogram
 library(tidyverse)
@@ -339,6 +340,12 @@ start_date_ym %>%
 
 ```
 
+There are three different membership options: short term membership where you can pay $8 for 24 hours or $16 for 3 days, and long-term membership which requires payment of $85 for an annual membership. 
+
+At least 30 minutes is allocated for each ride for members; and depending on your membership status, different levels of fees are incurred for each additional 30 minutes. For short-term members, any additional time exceeding 30 minutes incurs a $2 fee for the first extra 30 minutes, and $5 for each 30 minutes following.Long-term members are actually allowed 45 minute bike rides and for each 30 minutes after that it is a $2 fee. 
+(see Figure \@ref(fig:tripdur))!
+
+Interesting that ride times peak around 10 minutes regardless of the type of member. And after 20 minutes, long-term members rides drop off drastically as compared to the gradual decrease in short-term member's ride times. Perhaps long term members are using the bikes for a primary source of transportation to and from work - hence the significantly shorter ride times.
 
 
 ##Cost of a Biking Trip 
@@ -361,7 +368,7 @@ ggplot(aes(x = cost, fill = usertype)) +
   labs(x = "Additional Fee($)")
 
 ```
-It is definitely worth it to be a member vs. a nonmember, there are many associated costs if you aren't.(see Figure \@ref(fig:CBT))!
+It is definitely worth it to be a member vs. a nonmember, there are many associated costs if you aren't (see Figure \@ref(fig:CBT)).
 
 
 
@@ -429,9 +436,10 @@ weather %>%
 
 
 ```
+Must not be acccounting for wind-chill. I feel like it gets colder than the low 20's in Seattle!
+
 
 ##Mean Temperatures
-
 
 ```{r, label = "temp means", message = FALSE, warnings = FALSE, echo = FALSE}
 
@@ -448,7 +456,7 @@ weather %>%
   theme_bw() 
 
 ```
-
+Looks like they have all 4 seasons, instead of just the "perpetual rain" we always associate with Seattle.
 
 ##Maximum Temperatures
 
@@ -469,6 +477,7 @@ weather %>%
   theme_bw() 
 
 ```
+It definitely gets hotter than I anticipated there. With temperatures close to 100 degrees, it sounds like we're talking about a southern city vs. one in the north-west hemisphere.
 
 
 # Local Weather Events
@@ -482,7 +491,7 @@ weather %>%
   theme_bw()
 
 ```
-What a rainy city!
+What a rainy city - I guess the rumors are true since it is the most frequent weather event following "other"!!
 
 # Mean Temperature vs. Number of Trips
 
@@ -508,10 +517,12 @@ trip_weather %>%
     labs(x = "Temperature (Rounded to Nearest 5 degrees F)", y = "Number of Trips")
 
 ```
+People like to ride when it's not too hot, but also when it is not too cold. Additionally, for the purposes of this graph, the temperatures are rounded to the nearest 5 degrees Fahrenheit
+
 
 
 ## Normalize the Temperature vs. Number of Trips
-```{r, label = "Number of Trips/Number of days at Temp", message = FALSE, warnings = FALSE, echo = FALSE}
+```{r, label = "normalize", message = FALSE, warnings = FALSE, echo = FALSE}
 
 trip_weather %>%
   mutate(Mean_Temperature_F5 = 5*round(Mean_Temperature_F/5))%>%
@@ -525,7 +536,7 @@ trip_weather %>%
 
 
 ```
-
+This chart (see Figure \@ref(fig:normalize)) shows a positive, linear relationship (standardized from the data from \@ref(fig: Number of Trips)) that shows the correlation between temperature and number of rides. Further reinforcing the fact that people are much more likely to ride when it is warm outside. 
 
 # Precipitation vs. Number of Trips
 
@@ -540,5 +551,20 @@ trip_weather %>%
   geom_line() +
   theme_bw() +
   labs(x = "Precipitation (Rounded to the Nearest 0.2 Inches)", y = "Number of Trips / Number of Days at Precipitation Level")
+
+```
+
+This chart kind of speaks for itself as well, however, the more it rains, the less likely that people are willing to use the bicycle sharing system. However, rain does not seem to always impair people's want/need to ride a bike, but it does have a rather dramatic impact.
+
+
+
+
+
+
+#**Conclusion**
+Annnnnnnd that's a wrap. Data from the doomed bike sharing system and a graphical analysis of it. Hope you enjoyed my recreation of this project intially done by Amber Thomas and my examination of it.
+```{r, echo=FALSE}
+
+knitr:: include_graphics("pronto.jpg")
 
 ```
