@@ -182,7 +182,7 @@ trip_2 %>%
 
 ```
 
-People really like going on fall and spring rides multiple times a day. Can you blame them though, Seattle in the fall is remarkable (see Figure \@ref(fig:fall))!!!
+People really like going on fall and spring rides multiple times a day. Can you blame them though, Seattle in the fall is remarkable (see below)!!!
 
 
 ```{r, label = "fall", echo=FALSE}
@@ -368,7 +368,7 @@ ggplot(aes(x = cost, fill = usertype)) +
   labs(x = "Additional Fee($)")
 
 ```
-It is definitely worth it to be a member vs. a nonmember, there are many associated costs if you aren't (see Figure \@ref(fig:CBT)).
+It is definitely worth it to be a member vs. a nonmember, there are many associated costs if you aren't (see Figure \@ref(fig:CBT))!
 
 
 
@@ -392,7 +392,7 @@ Riders tend to be aged towards the upper 20s, but this number could be misleadin
 
 ## Minimum Temperatures
 
-```{r, label = "temps min", message = FALSE, warnings = FALSE, echo = FALSE}
+```{r, fig.cap = "Min. Temps", message = FALSE, warnings = FALSE, echo = FALSE}
 
 # Adjusting the Date Variable
 weather$Date <- mdy(weather$Date)
@@ -441,7 +441,7 @@ Must not be acccounting for wind-chill. I feel like it gets colder than the low 
 
 ##Mean Temperatures
 
-```{r, label = "temp means", message = FALSE, warnings = FALSE, echo = FALSE}
+```{r, fig.cap = "Mean. Temps", message = FALSE, warnings = FALSE, echo = FALSE}
 
 weather %>% 
   
@@ -461,7 +461,7 @@ Looks like they have all 4 seasons, instead of just the "perpetual rain" we alwa
 ##Maximum Temperatures
 
 
-```{r, label = "temps max", message = FALSE, warnings = FALSE, echo = FALSE}
+```{r, fig.cap = "Max Temps", message = FALSE, warnings = FALSE, echo = FALSE}
 
 weather %>% 
   
@@ -482,7 +482,7 @@ It definitely gets hotter than I anticipated there. With temperatures close to 1
 
 # Local Weather Events
 
-```{r, message = FALSE, warnings = FALSE, echo = FALSE}
+```{r, fig.cap = "Frequency of Type of Weather", message = FALSE, warnings = FALSE, echo = FALSE}
 
 weather %>%
   ggplot(aes(x = as.factor(Events)))+
@@ -495,7 +495,7 @@ What a rainy city - I guess the rumors are true since it is the most frequent we
 
 # Mean Temperature vs. Number of Trips
 
-```{r, label = "Number of Trips", message = FALSE, warnings = FALSE, echo = FALSE}
+```{r, fig.cap = "Temperature and it's Relationship with Trip Number", message = FALSE, warnings = FALSE, echo = FALSE}
 
 # Make a copy of the data frame
 trip_3 <- trip22
@@ -522,7 +522,7 @@ People like to ride when it's not too hot, but also when it is not too cold. Add
 
 
 ## Normalize the Temperature vs. Number of Trips
-```{r, label = "normalize", message = FALSE, warnings = FALSE, echo = FALSE}
+```{r, fig.cap = "Temperature and it's Relationship with Trip Number 2", message = FALSE, warnings = FALSE, echo = FALSE}
 
 trip_weather %>%
   mutate(Mean_Temperature_F5 = 5*round(Mean_Temperature_F/5))%>%
@@ -536,11 +536,11 @@ trip_weather %>%
 
 
 ```
-This chart (see Figure \@ref(fig:normalize)) shows a positive, linear relationship (standardized from the data from \@ref(fig: Number of Trips)) that shows the correlation between temperature and number of rides. Further reinforcing the fact that people are much more likely to ride when it is warm outside. 
+This chart shows a positive, linear relationship (standardized from the data from the previous chart) that shows the correlation between temperature and number of rides. Further reinforcing the fact that people are much more likely to ride when it is warm outside. 
 
 # Precipitation vs. Number of Trips
 
-```{r, message = FALSE, warnings = FALSE, echo = FALSE}
+```{r, fig.cap = "Rain Events and it's Relationship with Trip Number", message = FALSE, warnings = FALSE, echo = FALSE}
 
 trip_weather %>%
   mutate(Precipitation_In.2 = .2*round(Precipitation_In/.2))%>%
